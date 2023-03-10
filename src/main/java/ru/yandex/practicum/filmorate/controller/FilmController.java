@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class FilmController {
     private int idForFilms;                                               // id фильма
     private HashMap<Integer, Film> films = new HashMap<>();               // хранилище фильмов
@@ -26,6 +28,7 @@ public class FilmController {
             if (!listOfFilms.contains(newFilm)) {
                 listOfFilms.add(newFilm);
             }
+            log.info("В базу добавлен новый фильм" + newFilm.toString());
             return newFilm;
         } else return null;
     }
@@ -35,7 +38,7 @@ public class FilmController {
         if (filmValidate(film)) {
             try {
                 if (!films.containsKey(film.getId())) {
-                    throw new ValidationException("Пользователя с таким id не существует. Обновление не возможно");
+                    throw new ValidationException("Фильма с таким id не существует. Обновление невозможно");
                 } else {
                     films.put(film.getId(), film);
                 }
@@ -46,6 +49,7 @@ public class FilmController {
                 listOfFilms .remove(film.getId());
                 listOfFilms.add(film);
             }
+            log.info("Информация о фильме " + film.toString() + "обновлена");
             return films.get(film.getId());
         }
         return null;
@@ -74,7 +78,8 @@ public class FilmController {
 
     @GetMapping("/films")                                 // получение списка всех фильмов
     public List<Film> getFilms() {
-        return (List<Film>) films;
+        log.info("Количество фильмов в хранилище " + listOfFilms.size());
+        return listOfFilms;
     }
 }
 

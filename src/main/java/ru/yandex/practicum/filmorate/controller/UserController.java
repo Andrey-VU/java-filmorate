@@ -1,5 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -10,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class UserController {
     private int idForUsers;
     private final HashMap<Integer, User> users = new HashMap<>();                    // хранилище пользователей
@@ -24,6 +27,7 @@ public class UserController {
             if (!listOfUsers.contains(newUser)) {
                 listOfUsers.add(newUser);
             }
+            log.info("Зарегистрирован новый пользователь" + newUser.toString());
             return newUser;
         } else return null;
     }
@@ -44,12 +48,13 @@ public class UserController {
                 listOfUsers .remove(user.getId());
                 listOfUsers.add(user);
             }
+            log.info("Пользователь " + user.toString() + "был обновлён");
             return users.get(user.getId());
         }
         return null;
     }
 
-    private boolean userValidate(User user) throws ValidationException {
+    private boolean userValidate(@NotNull User user) throws ValidationException {
         try {
             String email = user.getEmail();
             String login = user.getLogin();
@@ -67,12 +72,14 @@ public class UserController {
             } else return true;
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
+            log.info("Вызвано исключение" + e.toString());
         }
         return false;
     }
 
     @GetMapping("/users")                                    // для получения списка пользователей
     public List<User> getListOfUsers() {
+        log.info("Количество пользователей составляет " + listOfUsers.size());
         return listOfUsers;
     }
 }
