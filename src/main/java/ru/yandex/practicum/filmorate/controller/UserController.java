@@ -1,85 +1,48 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.repo.UserRepository;
+import ru.yandex.practicum.filmorate.service.ValidateFilmAndUser;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import javax.validation.Valid;
+import java.util.Collection;
 
 @RestController
 @Slf4j
+@RequestMapping("/users")
+@Validated
 public class UserController {
-    private int idForUsers;
-    private final HashMap<Integer, User> users = new HashMap<>();                    // хранилище пользователей
-    private List<User> listOfUsers = new ArrayList<>();                              // список пользователей
+    private ValidateFilmAndUser validator = new ValidateFilmAndUser();
+    private final UserRepository userRepository = new UserRepository();
 
-    @PostMapping(value = "/users")                                 //        создание пользователя;
-    public User makeNewUser(@RequestBody User user) {
-        if (userValidate(user)) {
-            User newUser = new User(++idForUsers, user.getEmail(), user.getLogin(), user.getName(),
-                    user.getBirthday());
-            users.put(newUser.getId(), newUser);
-            if (!listOfUsers.contains(newUser)) {
-                listOfUsers.add(newUser);
-            }
-            log.info("Зарегистрирован новый пользователь" + newUser.toString());
-            return newUser;
-        } else return null;
+    public UserController() {
     }
 
-    @PutMapping(value = "/users")             //        обновление пользователя;
-    public User updateUser(@RequestBody User user) throws ValidationException {
-        if (userValidate(user)) {
-            try {
-                if (!users.containsKey(user.getId())) {
-                    throw new ValidationException("Пользователя с таким id не существует. Обновление не возможно");
-                } else {
-                    users.put(user.getId(), user);
-                }
-            } catch (ValidationException e) {
-                System.out.println(e.getMessage());
-            }
-            if (listOfUsers.contains(user.getId())) {
-                listOfUsers .remove(user.getId());
-                listOfUsers.add(user);
-            }
-            log.info("Пользователь " + user.toString() + "был обновлён");
-            return users.get(user.getId());
+    @PostMapping()                                 //        создание пользователя;
+    public User makeNewUser(@Valid @RequestBody User user) {
+        if (validator.userValidate(user)) {
+            userRepository.save(user);
         }
-        return null;
+        log.info("Зарегистрирован новый пользователь" + userRepository.users.get(user.getId()).toString());
+        return userRepository.users.get(user.getId());
     }
 
-    private boolean userValidate(@NotNull User user) throws ValidationException {
-        try {
-            String email = user.getEmail();
-            String login = user.getLogin();
-            if (email == null || email.equals("")) {
-                throw new ValidationException("email не может быть пустым");
-            } else if (!email.contains("@") || email.charAt(0) == "@".charAt(0)
-                    || email.charAt(email.length() - 1) == "@".charAt(0)) {
-                throw new ValidationException("введён не корректный email");
-            } else if (login == null || login.equals("") || login.contains(" ")) {
-                throw new ValidationException("логин не может быть пустым, или содержащим пробелы");
-            } else if (user.getName() == null || user.getName().equals("")) {
-                user.setName(login);
-            } else if (user.getBirthday().isAfter(LocalDateTime.now())) {
-                throw new ValidationException("введена некорректная дата рождения");
-            } else return true;
-        } catch (ValidationException e) {
-            System.out.println(e.getMessage());
-            log.info("Вызвано исключение" + e.toString());
+    @PutMapping()             //        обновление пользователя;
+    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
+        if (validator.userValidate(user)) {
+            userRepository.update(user);
         }
-        return false;
+        log.info("Пользователь " + user.toString() + "был обновлён");
+           return userRepository.users.get(user.getId());
     }
 
-    @GetMapping("/users")                                    // для получения списка пользователей
-    public List<User> getListOfUsers() {
-        log.info("Количество пользователей составляет " + listOfUsers.size());
-        return listOfUsers;
+    @GetMapping()                                    // для получения списка пользователей
+    public Collection<User> getListOfUsers() {
+        log.info("Количество пользователей составляет " + userRepository.getUsers().size());
+        return userRepository.getUsers();
     }
 }

@@ -2,16 +2,20 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import javax.validation.constraints.*;
 
 @Data
 @AllArgsConstructor
 public class Film {
-    final private int id;
+    private int id;
     private String name;
     private String description;
-    private LocalDateTime releaseDate;
-    private Duration duration;
+    private String releaseDate;
+    private int duration;
+
+    public Film() {
+    }
 }
+
