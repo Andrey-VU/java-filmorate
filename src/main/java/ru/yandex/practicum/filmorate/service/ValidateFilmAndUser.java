@@ -31,27 +31,22 @@ public class ValidateFilmAndUser {
             if (LocalDate.parse(user.getBirthday()).isAfter(LocalDate.now())) {
                 throw new ValidationException("введена некорректная дата рождения");
             }
-
         return true;
     }
 
     public boolean filmValidate(@NotNull Film film) throws ValidationException {
         LocalDate date = LocalDate.of(1895, Month.DECEMBER, 28);
-        //try {
             String name = film.getName();
             String description = film.getDescription();
             if (name == null || name.isBlank()) {
                 throw new ValidationException("Название фильма не может быть пустым");
-            } else if (description.length() > 200 ) {
+            } if (description.length() > 200 ) {
                 throw new ValidationException("Описание фильма должно быть короче 200 символов");
-            } else if (film.getDuration() <= 0) {
+            } if (film.getDuration() <= 0) {
                 throw new ValidationException("Продолжительность фильма не может быть отрицательной");
-            } else if (LocalDate.parse(film.getReleaseDate()).isBefore(date)) {
+            } if (LocalDate.parse(film.getReleaseDate()).isBefore(date)) {
                 throw new ValidationException("введена некорректная дата создания фильма");
             }
-//        } catch (ValidationException e) {
-//            System.out.println(e.getMessage());
-//        }
         return true;
     }
 }

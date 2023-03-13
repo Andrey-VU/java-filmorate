@@ -5,7 +5,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class UserRepository {
+public class UsersRepository {
     private int id;
     public final HashMap<Integer, User> users = new HashMap<>();   // хранилище пользователей
 
