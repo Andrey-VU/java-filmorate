@@ -27,8 +27,8 @@ public class UserController {
         if (validator.userValidate(user)) {
             usersRepository.save(user);
         }
-        log.info("Зарегистрирован новый пользователь" + usersRepository.users.get(user.getId()).toString());
-        return usersRepository.users.get(user.getId());
+        log.info("Зарегистрирован новый пользователь" + usersRepository.getUserById(user.getId()).toString());
+        return usersRepository.getUserById(user.getId());
     }
 
     @PutMapping()             //        обновление пользователя;
@@ -36,8 +36,8 @@ public class UserController {
         if (validator.userValidate(user)) {
             usersRepository.update(user);
         }
-        log.info("Пользователь " + usersRepository.users.get(user.getId()).toString() + "был обновлён");
-           return usersRepository.users.get(user.getId());
+        log.info("Пользователь " + usersRepository.getUserById(user.getId()).toString() + "был обновлён");
+           return usersRepository.getUserById(user.getId());
     }
 
     @GetMapping()                                    // для получения списка пользователей

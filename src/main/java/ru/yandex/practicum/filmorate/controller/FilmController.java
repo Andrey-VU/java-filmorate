@@ -24,8 +24,8 @@ public class FilmController {
         if (validator.filmValidate(film)) {
             filmsRepository.save(film);
         }
-        log.info("В базу добавлен новый фильм" + filmsRepository.films.get(film.getId()).toString());
-        return filmsRepository.films.get(film.getId());
+        log.info("В базу добавлен новый фильм" + filmsRepository.getFilmById(film.getId()).toString());
+        return filmsRepository.getFilmById(film.getId());
     }
 
     @PutMapping()                           // обновление фильма
@@ -33,8 +33,8 @@ public class FilmController {
         if (validator.filmValidate(film)) {
             filmsRepository.update(film);
         }
-        log.info("Информация о фильме " + filmsRepository.films.get(film.getId()).toString() + "обновлена");
-        return filmsRepository.films.get(film.getId());
+        log.info("Информация о фильме " + filmsRepository.getFilmById(film.getId()).toString() + "обновлена");
+        return filmsRepository.getFilmById(film.getId());
   }
 
     @GetMapping()                                 // получение списка всех фильмов

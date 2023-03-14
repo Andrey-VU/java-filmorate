@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class UsersRepository {
     private int id;
-    public final HashMap<Integer, User> users = new HashMap<>();   // хранилище пользователей
+    private final HashMap<Integer, User> users = new HashMap<>();   // хранилище пользователей
 
     public int generateId() {
         return ++id;
@@ -23,6 +23,13 @@ public class UsersRepository {
     public void save(User user) {
         user.setId(generateId());
         users.put(user.getId(), user);
+    }
+
+    public User getUserById(int id) {
+        if (users.containsKey(id)) {
+            return users.get(id);
+        }
+        return null;
     }
 
     public Collection<User> getUsers() {
