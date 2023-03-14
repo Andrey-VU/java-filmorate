@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
-
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -14,39 +14,48 @@ import java.time.Month;
 @Component
 public class ValidateFilmAndUser {
 
-    public boolean userValidate(User user) {
-            String email = user.getEmail();
-            String login = user.getLogin();
-            if (email == null || email.equals("") || email.isBlank()) {
-                throw new ValidationException("email не может быть пустым");
-            }
-            if (!email.contains("@") || email.charAt(0) == "@".charAt(0)
-                    || email.charAt(email.length() - 1) == "@".charAt(0)) {
-                throw new ValidationException("введён не корректный email");
-            } if (login == null || login.equals("") || login.contains(" ")) {
-                throw new ValidationException("логин не может быть пустым, или содержащим пробелы");
-            } if (user.getName() == null || user.getName().isBlank() || user.getName().isEmpty()) {
-                user.setName(login);
-            }
-            if (LocalDate.parse(user.getBirthday()).isAfter(LocalDate.now())) {
-                throw new ValidationException("введена некорректная дата рождения");
-            }
-        return true;
+    public void userValidate(User user) {
+        String email = user.getEmail();
+        String login = user.getLogin();
+
+        if (StringUtils.isBlank(email)) {
+            log.info("Недопустимое значение поля email " + email.toString());
+            throw new ValidationException("email не может быть пустым");
+        }
+        if (StringUtils.containsNone(email, "@") || StringUtils.startsWith(email, "@")
+                || StringUtils.endsWithAny(email,"@", ".")) {
+            log.info("Недопустимое значение поля email " + email.toString());
+            throw new ValidationException("введён не корректный email");
+        }
+        if (StringUtils.isBlank(login) || StringUtils.containsWhitespace(login)) {
+            log.info("Недопустимое значение поля login " + login.toString());
+            throw new ValidationException("логин не может быть пустым, или содержащим пробелы");
+        }
+        if (StringUtils.isBlank(user.getName())) {
+            user.setName(login);
+        }
+        if (LocalDate.parse(user.getBirthday()).isAfter(LocalDate.now())) {
+            log.info("Указана дата рождения из будущего " + user.getBirthday());
+            throw new ValidationException("введена некорректная дата рождения");
+        }
     }
 
-    public boolean filmValidate(@NotNull Film film) throws ValidationException {
+    public void filmValidate(@NotNull Film film) throws ValidationException {
         LocalDate date = LocalDate.of(1895, Month.DECEMBER, 28);
         String name = film.getName();
         String description = film.getDescription();
-        if (name == null || name.isBlank()) {
+        if (StringUtils.isBlank(name)) {
+            log.info("Недопустимое значение поля name " + name);
             throw new ValidationException("Название фильма не может быть пустым");
         } if (description.length() > 200 ) {
+            log.info("Превышено количество символов в описании " + description.length());
             throw new ValidationException("Описание фильма должно быть короче 200 символов");
         } if (film.getDuration() <= 0) {
+            log.info("Введено отрицательное значение для длительности фильма " + film.getDuration());
             throw new ValidationException("Продолжительность фильма не может быть отрицательной");
         } if (LocalDate.parse(film.getReleaseDate()).isBefore(date)) {
+            log.info("Введена некорректная дата " + film.getReleaseDate());
             throw new ValidationException("введена некорректная дата создания фильма");
         }
-        return true;
     }
 }

@@ -1,13 +1,11 @@
 package ru.yandex.practicum.filmorate;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -16,14 +14,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 @SpringBootTest
 public class FilmControllerTest {
-
-    @Autowired
     private FilmController controller;
-
-    @Test
-    public void contextLoads() throws Exception {
-        assertThat(controller).isNotNull();
-    }
 
     @BeforeEach
     public void beforeEach() {

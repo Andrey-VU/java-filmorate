@@ -24,18 +24,18 @@ public class UserController {
 
     @PostMapping()                                 //        создание пользователя;
     public User makeNewUser(@Valid @RequestBody User user) {
-        if (validator.userValidate(user)) {
-            usersRepository.save(user);
-        }
+        validator.userValidate(user);
+        usersRepository.save(user);
+
         log.info("Зарегистрирован новый пользователь" + usersRepository.getUserById(user.getId()).toString());
         return usersRepository.getUserById(user.getId());
     }
 
     @PutMapping()             //        обновление пользователя;
     public User updateUser(@Valid @RequestBody User user) throws ValidationException {
-        if (validator.userValidate(user)) {
-            usersRepository.update(user);
-        }
+        validator.userValidate(user);
+        usersRepository.update(user);
+
         log.info("Пользователь " + usersRepository.getUserById(user.getId()).toString() + "был обновлён");
            return usersRepository.getUserById(user.getId());
     }

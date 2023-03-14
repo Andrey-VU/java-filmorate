@@ -1,10 +1,12 @@
 package ru.yandex.practicum.filmorate.repo;
+import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
 import java.util.HashMap;
 
+@Slf4j
 public class UsersRepository {
     private int id;
     private final HashMap<Integer, User> users = new HashMap<>();   // хранилище пользователей
@@ -15,9 +17,9 @@ public class UsersRepository {
 
     public void update(User user) {
         if (!users.containsKey(user.getId())) {
+            log.info("Обновление данных пользователя" + user + "вызвало исключение");
             throw new ValidationException("Пользователя с таким id не существует. Обновление не возможно");
         } else users.put(user.getId(), user);
-
     }
 
     public void save(User user) {
