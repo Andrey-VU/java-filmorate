@@ -36,17 +36,17 @@ public class ValidateFilmAndUser {
 
     public boolean filmValidate(@NotNull Film film) throws ValidationException {
         LocalDate date = LocalDate.of(1895, Month.DECEMBER, 28);
-            String name = film.getName();
-            String description = film.getDescription();
-            if (name == null || name.isBlank()) {
-                throw new ValidationException("Название фильма не может быть пустым");
-            } if (description.length() > 200 ) {
-                throw new ValidationException("Описание фильма должно быть короче 200 символов");
-            } if (film.getDuration() <= 0) {
-                throw new ValidationException("Продолжительность фильма не может быть отрицательной");
-            } if (LocalDate.parse(film.getReleaseDate()).isBefore(date)) {
-                throw new ValidationException("введена некорректная дата создания фильма");
-            }
+        String name = film.getName();
+        String description = film.getDescription();
+        if (name == null || name.isBlank()) {
+            throw new ValidationException("Название фильма не может быть пустым");
+        } if (description.length() > 200 ) {
+            throw new ValidationException("Описание фильма должно быть короче 200 символов");
+        } if (film.getDuration() <= 0) {
+            throw new ValidationException("Продолжительность фильма не может быть отрицательной");
+        } if (LocalDate.parse(film.getReleaseDate()).isBefore(date)) {
+            throw new ValidationException("введена некорректная дата создания фильма");
+        }
         return true;
     }
 }

@@ -31,7 +31,7 @@ public class FilmController {
     @PutMapping()                           // обновление фильма
     public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
         if (validator.filmValidate(film)) {
-            filmsRepository.films.put(film.getId(), film);
+            filmsRepository.update(film);
         }
         log.info("Информация о фильме " + filmsRepository.films.get(film.getId()).toString() + "обновлена");
         return filmsRepository.films.get(film.getId());

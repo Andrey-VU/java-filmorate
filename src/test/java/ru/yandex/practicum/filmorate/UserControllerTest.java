@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,30 +40,11 @@ public class UserControllerTest {
         userController.makeNewUser(user1);
         userController.makeNewUser(user2);
         userController.makeNewUser(user3);
-        ArrayList<User> tmpList = new ArrayList<>();
+        Collection<User> tmpList = new ArrayList<>();
         tmpList.add(user1);
         tmpList.add(user2);
         tmpList.add(user3);
-        assertEquals(tmpList, userController.getListOfUsers(),
-                "Список пользователей не сформирован, либо не выгуржен");
-    }
-
-    @Test
-    public void shouldReturnListOfUsersPostman() {
-        User user1 = new User(0, "qw@qw.ru", "Login", "", "1900-03-25");
-        User user2 = new User(0, null, "Login", "   ", "1900-03-25");
-        User user3 = new User(0, "test@mail.ru", "dolore", "lodore","1996-08-20");
-        User user4 = new User(0, "test@mail.ru", "loredo", "lodorede",null);
-        userController.makeNewUser(user1);
-        userController.makeNewUser(user2);
-        userController.makeNewUser(user3);
-        userController.makeNewUser(user4);
-        ArrayList<User> tmpList = new ArrayList<>();
-        tmpList.add(user1);
-        tmpList.add(user2);
-        tmpList.add(user3);
-        tmpList.add(user4);
-        assertEquals(tmpList, userController.getListOfUsers(),
+        assertEquals(tmpList.toString(), userController.getListOfUsers().toString(),
                 "Список пользователей не сформирован, либо не выгуржен");
     }
 

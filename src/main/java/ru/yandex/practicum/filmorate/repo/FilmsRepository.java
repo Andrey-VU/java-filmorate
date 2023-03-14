@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class FilmsRepository {
-    private int id;                                               // id фильма
+    private int id = 0;                                                        // id фильма
     public final HashMap<Integer, Film> films = new HashMap<>();               // хранилище фильмов
 
     public void save(@NotNull Film film) {
@@ -14,10 +14,10 @@ public class FilmsRepository {
         films.put(film.getId(), film);
     }
 
-    public void update(@NotNull Film film) {
-        if (!films.containsKey(film.getId())) {
-            throw new ValidationException("Фильма с таким id не существует. Обновление не возможно");
-        } else films.put(film.getId(), film);
+    public void update(@NotNull Film film) throws ValidationException {
+        if (films.containsKey(film.getId())) {
+            films.put(film.getId(), film);
+        } else throw new ValidationException("Фильма с таким id не существует. Обновление не возможно");
     }
 
     public int generateId() {
