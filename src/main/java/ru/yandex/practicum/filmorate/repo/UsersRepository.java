@@ -9,7 +9,7 @@ import java.util.HashMap;
 @Slf4j
 public class UsersRepository {
     private int id;
-    private final HashMap<Integer, User> users = new HashMap<>();   // хранилище пользователей
+    private final HashMap<Integer, User> users = new HashMap<>();
 
     public int generateId() {
         return ++id;
@@ -17,8 +17,8 @@ public class UsersRepository {
 
     public void update(User user) {
         if (!users.containsKey(user.getId())) {
-            log.info("Обновление данных пользователя" + user + "вызвало исключение");
-            throw new ValidationException("Пользователя с таким id не существует. Обновление не возможно");
+            log.info("Id пользователя: " + user + " - не найдено. Обновление невозможно");
+            throw new ValidationException("Пользователя с таким id не существует. Обновление невозможно");
         } else users.put(user.getId(), user);
     }
 

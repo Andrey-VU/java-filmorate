@@ -23,7 +23,6 @@ public class FilmController {
     public Film makeNewFilm(@Valid @RequestBody Film film) {
         validator.filmValidate(film);
         filmsRepository.save(film);
-
         log.info("В базу добавлен новый фильм" + filmsRepository.getFilmById(film.getId()).toString());
         return filmsRepository.getFilmById(film.getId());
     }
@@ -32,10 +31,9 @@ public class FilmController {
     public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
         validator.filmValidate(film);
         filmsRepository.update(film);
-
         log.info("Информация о фильме " + filmsRepository.getFilmById(film.getId()).toString() + "обновлена");
         return filmsRepository.getFilmById(film.getId());
-  }
+    }
 
     @GetMapping()
     public Collection<Film> getFilms() {

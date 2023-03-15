@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 @Slf4j
 public class FilmsRepository {
-    private int id = 0;                                                        // id фильма
-    private final HashMap<Integer, Film> films = new HashMap<>();               // хранилище фильмов
+    private int id = 0;
+    private final HashMap<Integer, Film> films = new HashMap<>();
 
     public void save(@NotNull Film film) {
         film.setId(generateId());
@@ -20,7 +20,7 @@ public class FilmsRepository {
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
         } else {
-            log.info("Обновление " + film + "вызвало исключение");
+            log.info("В базе отсутствует " + film + " с указанным Id. Обновление невозможно");
             throw new ValidationException("Фильма с таким id не существует. Обновление не возможно");
         }
     }
