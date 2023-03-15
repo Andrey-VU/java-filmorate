@@ -20,7 +20,7 @@ public class FilmsRepository {
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
         } else {
-            log.info("В базе отсутствует " + film + " с указанным Id. Обновление невозможно");
+            log.error("В базе отсутствует " + film + " с указанным Id. Обновление невозможно");
             throw new ValidationException("Фильма с таким id не существует. Обновление не возможно");
         }
     }

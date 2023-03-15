@@ -17,7 +17,7 @@ public class UsersRepository {
 
     public void update(User user) {
         if (!users.containsKey(user.getId())) {
-            log.info("Id пользователя: " + user + " - не найдено. Обновление невозможно");
+            log.error("Id пользователя: " + user + " - не найдено. Обновление невозможно");
             throw new ValidationException("Пользователя с таким id не существует. Обновление невозможно");
         } else users.put(user.getId(), user);
     }

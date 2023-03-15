@@ -19,23 +19,23 @@ public class ValidateFilmAndUser {
         String login = user.getLogin();
 
         if (StringUtils.isBlank(email)) {
-            log.info("Недопустимое значение поля email " + email.toString());
+            log.error("Недопустимое значение поля email " + email.toString());
             throw new ValidationException("email не может быть пустым");
         }
         if (StringUtils.containsNone(email, "@") || StringUtils.startsWith(email, "@")
                 || StringUtils.endsWithAny(email,"@", ".")) {
-            log.info("Недопустимое значение поля email " + email.toString());
+            log.error("Недопустимое значение поля email " + email.toString());
             throw new ValidationException("введён не корректный email");
         }
         if (StringUtils.isBlank(login) || StringUtils.containsWhitespace(login)) {
-            log.info("Недопустимое значение поля login " + login.toString());
+            log.error("Недопустимое значение поля login " + login.toString());
             throw new ValidationException("логин не может быть пустым, или содержащим пробелы");
         }
         if (StringUtils.isBlank(user.getName())) {
             user.setName(login);
         }
         if (LocalDate.parse(user.getBirthday()).isAfter(LocalDate.now())) {
-            log.info("Указана дата рождения из будущего " + user.getBirthday());
+            log.error("Указана дата рождения из будущего " + user.getBirthday());
             throw new ValidationException("введена некорректная дата рождения");
         }
     }
@@ -45,16 +45,16 @@ public class ValidateFilmAndUser {
         String name = film.getName();
         String description = film.getDescription();
         if (StringUtils.isBlank(name)) {
-            log.info("Недопустимое значение поля name " + name);
+            log.error("Недопустимое значение поля name " + name);
             throw new ValidationException("Название фильма не может быть пустым");
         } if (description.length() > 200 ) {
-            log.info("Превышено количество символов в описании " + description.length());
+            log.error("Превышено количество символов в описании " + description.length());
             throw new ValidationException("Описание фильма должно быть короче 200 символов");
         } if (film.getDuration() <= 0) {
-            log.info("Введено отрицательное значение для длительности фильма " + film.getDuration());
+            log.error("Введено отрицательное значение для длительности фильма " + film.getDuration());
             throw new ValidationException("Продолжительность фильма не может быть отрицательной");
         } if (LocalDate.parse(film.getReleaseDate()).isBefore(date)) {
-            log.info("Введена некорректная дата " + film.getReleaseDate());
+            log.error("Введена некорректная дата " + film.getReleaseDate());
             throw new ValidationException("введена некорректная дата создания фильма");
         }
     }

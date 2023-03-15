@@ -30,11 +30,11 @@ public class UserController {
     }
 
     @PutMapping()
-    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
+    public User updateUser(@Valid @RequestBody User user) {
         validator.userValidate(user);
         usersRepository.update(user);
         log.info("Пользователь " + usersRepository.getUserById(user.getId()).toString() + "был обновлён");
-           return usersRepository.getUserById(user.getId());
+        return usersRepository.getUserById(user.getId());
     }
 
     @GetMapping()
