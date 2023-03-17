@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.repo;
+package ru.yandex.practicum.filmorate.storage;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -7,14 +7,16 @@ import java.util.Collection;
 import java.util.HashMap;
 
 @Slf4j
-public class UsersRepository {
+public class InMemoryUserStorage implements UserStorage {
     private int id;
     private final HashMap<Integer, User> users = new HashMap<>();
 
+    @Override
     public int generateId() {
         return ++id;
     }
 
+    @Override
     public void update(User user) {
         if (!users.containsKey(user.getId())) {
             log.error("Id пользователя: " + user + " - не найдено. Обновление невозможно");
@@ -22,18 +24,18 @@ public class UsersRepository {
         } else users.put(user.getId(), user);
     }
 
+    @Override
     public void save(User user) {
         user.setId(generateId());
         users.put(user.getId(), user);
     }
 
+    @Override
     public User getUserById(int id) {
-        if (users.containsKey(id)) {
             return users.get(id);
         }
-        return null;
-    }
 
+    @Override
     public Collection<User> getUsers() {
         return users.values();
     }
