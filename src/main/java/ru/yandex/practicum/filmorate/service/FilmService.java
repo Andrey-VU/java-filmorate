@@ -6,22 +6,19 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 @Service
 public class FilmService {
     private Film film;
     private FilmStorage filmStorage;
-    private UserStorage userStorage;
-    private TreeMap<Integer, Integer> likes;
 
     @Autowired
-    public FilmService(Film film, FilmStorage filmStorage, UserStorage userStorage) {
+    public FilmService(Film film, FilmStorage filmStorage) {
         this.film = film;
         this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
     }
 
     public void addLike(int idOfUser) {
@@ -32,32 +29,22 @@ public class FilmService {
         film.getLikes().remove(idOfUser);
     }
 
-    public void getTop10Films() {
-        Stream<Film> filmsStream = filmStorage.getFilms().stream(); // создали стрим, записали в переменную
-        filmsStream
-               .sorted(new FilmComparator())
-        ;
+    public ArrayList<Film> getTop10Films() {
+        ArrayList<Film> top10Films = new ArrayList<>();
+        filmStorage.getFilms().stream()
+                .sorted(new FilmComparator())                 // отсортировали по количеству лайков
+                .limit(10)
+                .forEach(top10Films::add);
+
+        return top10Films;                                  // вернули топ 10 фильмов
     }
 
-    private class FilmComparator implements Compaturator<Film> {
-        @Override
-        public int compare(Film film, Film t1) {
-            return film.getLikes().size() - t1.getLikes().size();
+    class FilmComparator implements Comparator<Film>{
+            public int compare(Film a, Film b){
+                return a.getLikes().size() - b.getLikes().size();
+            }
         }
-    }
 }
-
-        //
-//        TreeMap<Integer, Integer> likes = new TreeMap<>();
-//        for (Film film : filmStorage.getFilms()) {
-//            if (film.getLikes() != null)
-//            likes.put(film.getId(), film.getLikes().size());
-//        }
-//        likes.values().stream().sorted();
-//        return null;
-//    }
-
-
 
 //    Пусть пока каждый пользователь может поставить лайк фильму только один раз.
 
