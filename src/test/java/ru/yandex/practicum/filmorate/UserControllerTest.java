@@ -88,4 +88,11 @@ public class UserControllerTest {
         assertThrows(ValidationException.class, () -> userController.makeNewUser(userFromPostmanTest));
     }
 
+//    @Test
+//    public void shouldGetUserById() {
+//
+//    }
+
+
+
 }

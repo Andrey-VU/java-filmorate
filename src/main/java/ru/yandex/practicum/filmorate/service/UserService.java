@@ -63,4 +63,8 @@ public class UserService {
     public Set<Integer> getFriends(int id) {
         return userStorage.getUserById(id).getFriends();
     }
+
+    public User getUserById(int id) {
+        return userStorage.getUserById(id);
+    }
 }
