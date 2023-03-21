@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,9 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 public class UserControllerTest {
     UserController userController;
+    @Autowired
+    UserService userService;
+    @Autowired
+    UserStorage userStorage;
 
     @Autowired
     private UserController controller;
+
     @Test
     public void contextLoads() throws Exception {
         assertThat(controller).isNotNull();
@@ -29,8 +37,14 @@ public class UserControllerTest {
 
     @BeforeEach
     private void beforeEach() {
-        userController = new UserController();
+        userController = new UserController(userService);
     }
+
+    @AfterEach
+    private void afterEach() {
+        userController.getListOfUsers().clear();
+    }
+
 
     @Test
     public void shouldReturnListOfUsers() {
@@ -47,7 +61,6 @@ public class UserControllerTest {
         assertEquals(tmpList.toString(), userController.getListOfUsers().toString(),
                 "Список пользователей не сформирован, либо не выгуржен");
     }
-
 
     @Test
     public void shouldMakeUser(){

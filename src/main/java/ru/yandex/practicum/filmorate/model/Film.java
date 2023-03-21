@@ -1,15 +1,10 @@
 package ru.yandex.practicum.filmorate.model;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Component
 public class Film {
     private int id;
     private Set<Integer> likes;           //  хранилище id тех, кто отметил фильм понравившимся
@@ -17,5 +12,16 @@ public class Film {
     private String description;
     private String releaseDate;
     private int duration;
+
+    public Film(int id, String name, String description, String releaseDate, int duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+    }
+
+    public Film() {
+    }
 }
 

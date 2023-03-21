@@ -6,19 +6,26 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 
 @SpringBootTest
 public class FilmControllerTest {
     private FilmController controller;
+    @Autowired
+    private FilmService filmService;
+    @Autowired
+    private FilmStorage filmStorage;
 
     @BeforeEach
     public void beforeEach() {
-        controller = new FilmController();
+        controller = new FilmController(filmService);
     }
 
     @Test
