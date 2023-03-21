@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -38,23 +39,28 @@ public class UserService {
         return userStorage.getUsers();
     }
 
-    public void addFriends(User user, int id) {
-        user.getFriends().add(id);
-        userStorage.getUserById(id).getFriends().add(user.getId());        // обеспечиваем взаимность
+    public Set<Integer> addFriends(int idUser, int idFriend) {
+        userStorage.getUserById(idUser).getFriends().add(idFriend);
+        userStorage.getUserById(idFriend).getFriends().add(idUser);        // обеспечиваем взаимность
+        return getFriends(idUser);
     }
 
-    public void deleteFromFriends(User user, int id) {
-        user.getFriends().remove(id);
-        userStorage.getUserById(id).getFriends().remove(id);               // обеспечиваем взаимность
+    public void deleteFromFriends(int idUser, int idFriend) {
+        userStorage.getUserById(idUser).getFriends().remove(idFriend);
+        userStorage.getUserById(idFriend).getFriends().remove(idUser);     // обеспечиваем взаимность
     }
 
-    public ArrayList<Integer> getCommonFriends(User user1, User user2) {
+    public ArrayList<Integer> getCommonFriends(int id1, int id2) {
         ArrayList<Integer> commonFriends = new ArrayList<>();
-        for (Integer friend : userStorage.getUserById(user2.getId()).getFriends()) {
-            if (user1.getFriends().contains(friend)) {
+        for (Integer friend : userStorage.getUserById(id2).getFriends()) {
+            if (userStorage.getUserById(id1).getFriends().contains(friend)) {
                 commonFriends.add(friend);
             }
         }
         return commonFriends;
+    }
+
+    public Set<Integer> getFriends(int id) {
+        return userStorage.getUserById(id).getFriends();
     }
 }

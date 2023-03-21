@@ -33,6 +33,18 @@ public class FilmController {
     public Collection<Film> getFilms() {
         return filmService.getFilms();
     }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void unlikeFilm(@PathVariable int id, @PathVariable int userId){
+
+    }
+
+//    PUT /films/{id}/like/{userId} — пользователь ставит лайк фильму.
+//    DELETE /films/{id}/like/{userId} — пользователь удаляет лайк.
+//            GET /films/popular?count={count} — возвращает список из первых count фильмов по количеству лайков.
+//    Если значение параметра count не задано, верните первые 10.
+
+
 }
 
 
