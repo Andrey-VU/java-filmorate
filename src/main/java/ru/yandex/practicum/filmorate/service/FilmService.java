@@ -20,7 +20,6 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
-
     public Film save(Film film) {
         validator.filmValidate(film);
         filmStorage.save(film);
@@ -44,7 +43,6 @@ public class FilmService {
         return filmStorage.getFilmById(id);
     }
 
-
     public void addLike(Film film, int idOfUser) {
         film.getLikes().add(idOfUser);
         filmStorage.update(film);
@@ -55,14 +53,13 @@ public class FilmService {
         filmStorage.update(film);
     }
 
-    public ArrayList<Film> getTop10Films() {
-        ArrayList<Film> top10Films = new ArrayList<>();
+    public ArrayList<Film> getTopFilms(int count) {
+        ArrayList<Film> topFilms = new ArrayList<>();
         filmStorage.getFilms().stream()
                 .sorted(new FilmComparator())                 // отсортировали по количеству лайков
-                .limit(10)
-                .forEach(top10Films::add);
-
-        return top10Films;                                  // вернули топ 10 фильмов
+                .limit(count)
+                .forEach(topFilms::add);
+        return topFilms;                                  // вернули топ-лист фильмов
     }
 
     class FilmComparator implements Comparator<Film>{

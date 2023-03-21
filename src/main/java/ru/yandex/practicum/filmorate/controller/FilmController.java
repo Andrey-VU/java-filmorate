@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @RestController
@@ -29,22 +30,30 @@ public class FilmController {
         return filmService.update(film);
     }
 
+    @PutMapping("/{id}/like/{userId}")
+    public Film likeFilm(@PathVariable int id, @PathVariable int userId){
+        Film film = filmService.getFilmById(id);
+        film.getLikes().add(userId);
+        return filmService.update(film);
+    }
+
     @GetMapping()
     public Collection<Film> getFilms() {
         return filmService.getFilms();
     }
 
-    @DeleteMapping("/{id}/like/{userId}")
-    public void unlikeFilm(@PathVariable int id, @PathVariable int userId){
-
+    @GetMapping("/popular")
+    public ArrayList<Film> getTopFilms(@RequestParam (required = false) String count) {
+        return count == null  ? filmService.getTopFilms(10) :
+                filmService.getTopFilms(Integer.parseInt(count));
     }
 
-//    PUT /films/{id}/like/{userId} — пользователь ставит лайк фильму.
-//    DELETE /films/{id}/like/{userId} — пользователь удаляет лайк.
-//            GET /films/popular?count={count} — возвращает список из первых count фильмов по количеству лайков.
-//    Если значение параметра count не задано, верните первые 10.
-
-
+    @DeleteMapping("/{id}/like/{userId}")
+    public Film unlikeFilm(@PathVariable int id, @PathVariable int userId){
+        Film film = filmService.getFilmById(id);
+        film.getLikes().remove(userId);
+        return filmService.update(film);
+    }
 }
 
 
