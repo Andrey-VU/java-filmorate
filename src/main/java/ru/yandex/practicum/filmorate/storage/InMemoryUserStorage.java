@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -20,10 +21,11 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public void update(User user) {
-        if (!users.containsKey(user.getId())) {
-            log.error("Id пользователя: " + user + " - не найдено. Обновление невозможно");
-            throw new ValidationException("Пользователя с таким id не существует. Обновление невозможно");
-        } else users.put(user.getId(), user);
+        getUserById(user.getId()).orElseThrow(() -> {
+            log.error("В базе отсутствует " + user + " с указанным Id. Обновление невозможно");
+            throw new NullPointerException("Пользователя с таким id не существует. Обновление невозможно");
+        });
+        users.put(id, user);
     }
 
     @Override
@@ -33,8 +35,8 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getUserById(int id) {
-            return users.get(id);
+    public Optional<User> getUserById(int id) {
+        return Optional.of(users.get(id));
         }
 
     @Override

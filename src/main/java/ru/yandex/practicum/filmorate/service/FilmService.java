@@ -20,18 +20,19 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
+
     public Film save(Film film) {
         validator.filmValidate(film);
         filmStorage.save(film);
         log.info("В базу добавлен новый фильм" + getFilmById(film.getId()).toString());
-        return filmStorage.getFilmById(film.getId());
+        return filmStorage.getFilmById(film.getId()).get();
     }
 
     public Film update(Film film) {
         validator.filmValidate(film);
         filmStorage.update(film);
         log.info("Информация о фильме " + getFilmById(film.getId()).toString() + "обновлена");
-        return filmStorage.getFilmById(film.getId());
+        return filmStorage.getFilmById(film.getId()).get();
     }
 
     public Collection<Film> getFilms() {
@@ -40,20 +41,26 @@ public class FilmService {
     }
 
     public Film getFilmById(int id) {
-        return filmStorage.getFilmById(id);
+        validator.idValidate(id);
+        Film film = filmStorage.getFilmById(id).orElseThrow(() -> new NullPointerException("Фильм с id "
+                + id + " не найден"));
+        return film;
     }
 
     public void addLike(Film film, int idOfUser) {
+        validator.idValidate(idOfUser);
         film.getLikes().add(idOfUser);
         filmStorage.update(film);
     }
 
-    public void deleteLike(Film film, int idOfUser) {
+    public Film deleteLike(Film film, int idOfUser) {
+        validator.idValidate(idOfUser);
         film.getLikes().remove(idOfUser);
         filmStorage.update(film);
+        return filmStorage.getFilmById(film.getId()).get();
     }
 
-    public ArrayList<Film> getTopFilms(int count) {
+    public Collection<Film> getTopFilms(int count) {
         ArrayList<Film> topFilms = new ArrayList<>();
         filmStorage.getFilms().stream()
                 .sorted(new FilmComparator())                 // отсортировали по количеству лайков
@@ -64,7 +71,7 @@ public class FilmService {
 
     class FilmComparator implements Comparator<Film>{
             public int compare(Film a, Film b){
-                return a.getLikes().size() - b.getLikes().size();
+                return b.getLikes().size() - a.getLikes().size();
             }
         }
 }

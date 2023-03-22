@@ -7,6 +7,8 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,7 +33,6 @@ class UserServiceTest {
     void shouldGetUserById() {
         assertThrows(NullPointerException.class, () -> userService.getUserById(1));
         userService.save(firstUser);
-        firstUser.setId(1);
         assertEquals(firstUser, userService.getUserById(1), "пользователь не вернулся из хранилища по id ");
     }
 
@@ -45,14 +46,15 @@ class UserServiceTest {
         userService.save(friendUser);
         userService.addFriends(firstUser.getId(), friendUser.getId());
 
-        Set<Integer> friendOfFirst = new HashSet<>();
-        friendOfFirst.add(friendUser.getId());
-        Set<Integer> friendOfFriend = new HashSet<>();
-        friendOfFriend.add(firstUser.getId());
+        Collection<User> friendOfFirst = new ArrayList<>();
+        friendOfFirst.add(friendUser);
+        Collection<User> friendOfFriend = new HashSet<>();
+        friendOfFriend.add(firstUser);
 
-        assertEquals(friendOfFirst, userService.getFriends(firstUser.getId()), "новый друг не добавлен");
-        assertEquals(friendOfFriend, userService.getFriends(friendUser.getId()), "нарушен принцип взаимности " +
-                "при добавлении в друзья");
+        assertEquals(friendOfFirst, userService.getFriends(firstUser.getId()),
+                "новый друг не добавлен");
+        assertEquals(friendOfFriend.toString(), userService.getFriends(friendUser.getId()).toString(),
+                "нарушен принцип взаимности при добавлении в друзья");
     }
 
     @Test

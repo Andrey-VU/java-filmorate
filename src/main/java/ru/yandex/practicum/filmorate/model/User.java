@@ -7,7 +7,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Builder
 public class User {
     private final Set<Integer> friends = new HashSet<>();          // поле для хранения "друзей"
     private int id;

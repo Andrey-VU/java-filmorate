@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -16,24 +17,23 @@ public class InMemoryFilmStorage implements FilmStorage {
     private final HashMap<Integer, Film> films = new HashMap<>();
 
     @Override
-    public void save(@NotNull Film film) {
+    public void save(Film film) {
         film.setId(generateId());
         films.put(film.getId(), film);
     }
 
     @Override
-    public void update(@NotNull Film film) throws ValidationException {
-        if (films.containsKey(film.getId())) {
-            films.put(film.getId(), film);
-        } else {
-            log.error("В базе отсутствует " + film + " с указанным Id. Обновление невозможно");
-            throw new ValidationException("Фильма с таким id не существует. Обновление не возможно");
-        }
+    public void update(Film film){
+        getFilmById(film.getId()).orElseThrow(() ->  {
+                    log.error("В базе отсутствует " + film + " с указанным Id. Обновление невозможно");
+                    throw new NullPointerException("Фильм с таким id не найден. Обновление невозможно");
+                });
+        films.put(id, film);
     }
 
     @Override
-    public Film getFilmById(int id) {
-        return films.get(id);
+    public Optional<Film> getFilmById(int id) {
+        return Optional.of(films.get(id));
     }
 
     @Override

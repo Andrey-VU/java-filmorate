@@ -47,15 +47,25 @@ public class ValidateFilmAndUser {
         if (StringUtils.isBlank(name)) {
             log.error("Недопустимое значение поля name " + name);
             throw new ValidationException("Название фильма не может быть пустым");
-        } if (description.length() > 200 ) {
+        }
+        if (description.length() > 200) {
             log.error("Превышено количество символов в описании " + description.length());
             throw new ValidationException("Описание фильма должно быть короче 200 символов");
-        } if (film.getDuration() <= 0) {
+        }
+        if (film.getDuration() <= 0) {
             log.error("Введено отрицательное значение для длительности фильма " + film.getDuration());
             throw new ValidationException("Продолжительность фильма не может быть отрицательной");
-        } if (LocalDate.parse(film.getReleaseDate()).isBefore(date)) {
+        }
+        if (LocalDate.parse(film.getReleaseDate()).isBefore(date)) {
             log.error("Введена некорректная дата " + film.getReleaseDate());
             throw new ValidationException("введена некорректная дата создания фильма");
+        }
+    }
+
+    public void idValidate(int id) throws NullPointerException {
+        if (id <= 0) {
+            log.error("Введён некорректный id " + id);
+            throw new NullPointerException("id не может быть меньше или равен нулю");
         }
     }
 }
