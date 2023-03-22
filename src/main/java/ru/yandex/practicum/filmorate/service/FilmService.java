@@ -24,14 +24,14 @@ public class FilmService {
         validator.filmValidate(film);
         filmStorage.save(film);
         log.info("В базу добавлен новый фильм" + getFilmById(film.getId()).toString());
-        return filmStorage.getFilmById(film.getId());
+        return filmStorage.getFilmById(film.getId()).get();
     }
 
     public Film update(Film film) {
         validator.filmValidate(film);
         filmStorage.update(film);
         log.info("Информация о фильме " + getFilmById(film.getId()).toString() + "обновлена");
-        return filmStorage.getFilmById(film.getId());
+        return filmStorage.getFilmById(film.getId()).get();
     }
 
     public Collection<Film> getFilms() {
@@ -40,7 +40,9 @@ public class FilmService {
     }
 
     public Film getFilmById(int id) {
-        return filmStorage.getFilmById(id);
+        Film film = filmStorage.getFilmById(id).orElseThrow(() -> new NullPointerException("Фильм с id "
+                + id + " не найден"));
+        return film;
     }
 
     public void addLike(Film film, int idOfUser) {

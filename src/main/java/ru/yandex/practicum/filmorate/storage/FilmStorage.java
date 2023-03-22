@@ -5,6 +5,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface FilmStorage {
 
@@ -12,7 +13,7 @@ public interface FilmStorage {
 
     void update(@NotNull Film film) throws ValidationException;
 
-    Film getFilmById(int id);
+    Optional<Film> getFilmById(int id);
 
     int generateId();
 
