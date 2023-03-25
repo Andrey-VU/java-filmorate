@@ -70,12 +70,6 @@ public class FilmController {
     public Map<String, String> handleValidationException(final ValidationException e) {
         return Map.of("error", e.getMessage());
     }
-
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public Map<String, String> handleAnyException(final RuntimeException e) {
-//        return Map.of("error", e.getMessage());
-//    }
 }
 
 
