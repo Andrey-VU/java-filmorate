@@ -21,11 +21,11 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public void update(Film film){
-        getFilmById(film.getId()).orElseThrow(() ->  {
-                    log.error("В базе отсутствует " + film + " с указанным Id. Обновление невозможно");
-                    throw new NullPointerException("Фильм с таким id не найден. Обновление невозможно");
-                });
+    public void update(Film film) {
+        getFilmById(film.getId()).orElseThrow(() -> {
+            log.error("В базе отсутствует " + film + " с указанным Id. Обновление невозможно");
+            throw new NullPointerException("Фильм с таким id не найден. Обновление невозможно");
+        });
         films.put(id, film);
     }
 
