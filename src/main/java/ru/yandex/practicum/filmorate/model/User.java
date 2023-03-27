@@ -1,19 +1,18 @@
 package ru.yandex.practicum.filmorate.model;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
+    private final Set<Integer> friends = new HashSet<>();          // поле для хранения "друзей"
     private int id;
-    @NotNull
     private String email;
     private String login;
     private String name;
-    @NotNull
     private String birthday;
 }

@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
-
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,10 +47,10 @@ class ValidateFilmAndUserTest {
         assertThrows(ValidationException.class, () -> validateUser.userValidate(user));
 
         user.setBirthday(null);
-        assertNull(user.getBirthday(),"Не допускает создания пустой даты рождения");
+        assertNull(user.getBirthday(), "Не допускает создания пустой даты рождения");
         user.setBirthday("");
-        assertEquals("", user.getBirthday(),"Не допускает создания пустой даты рождения");
-            }
+        assertEquals("", user.getBirthday(), "Не допускает создания пустой даты рождения");
+    }
 
     @Test
     void emailUser() {

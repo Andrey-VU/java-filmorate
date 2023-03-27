@@ -1,45 +1,76 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.repo.UsersRepository;
-import ru.yandex.practicum.filmorate.service.ValidateFilmAndUser;
+import ru.yandex.practicum.filmorate.service.UserService;
 
-import javax.validation.Valid;
 import java.util.Collection;
+import java.util.Map;
 
 @RestController
 @Slf4j
 @RequestMapping("/users")
-@Validated
-@NoArgsConstructor
 public class UserController {
-    private ValidateFilmAndUser validator = new ValidateFilmAndUser();
-    private final UsersRepository usersRepository = new UsersRepository();
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping()
-    public User makeNewUser(@Valid @RequestBody User user) {
-        validator.userValidate(user);
-        usersRepository.save(user);
-        log.info("Зарегистрирован новый пользователь" + usersRepository.getUserById(user.getId()).toString());
-        return usersRepository.getUserById(user.getId());
+    public User makeNewUser(@RequestBody User user) {
+        return userService.save(user);
     }
 
     @PutMapping()
-    public User updateUser(@Valid @RequestBody User user) {
-        validator.userValidate(user);
-        usersRepository.update(user);
-        log.info("Пользователь " + usersRepository.getUserById(user.getId()).toString() + "был обновлён");
-        return usersRepository.getUserById(user.getId());
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public Collection<User> addFriend(@PathVariable int id, @PathVariable int friendId) {
+        return userService.addFriends(id, friendId);
     }
 
     @GetMapping()
     public Collection<User> getListOfUsers() {
-        log.info("Количество пользователей составляет " + usersRepository.getUsers().size());
-        return usersRepository.getUsers();
+        return userService.getListOfUsers();
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public Collection<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.getCommonFriends(id, otherId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public Collection<User> getFriends(@PathVariable int id) {
+        return userService.getFriends(id);
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable int id) {
+        return userService.getUserById(id);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.deleteFromFriends(id, friendId);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleNull(final NullPointerException e) {
+        return Map.of("error", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidationException(final ValidationException e) {
+        return Map.of("error", e.getMessage());
     }
 }
