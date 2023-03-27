@@ -8,10 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
@@ -30,7 +27,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    public void shouldMakeFilm(){
+    public void shouldMakeFilm() {
         Film testFilm = new Film(0, "Assa", "About",
                 "1900-03-25", 120);
         Film filmFromStorage = controller.makeNewFilm(testFilm);

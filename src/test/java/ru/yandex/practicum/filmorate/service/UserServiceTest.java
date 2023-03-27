@@ -5,12 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -66,6 +64,6 @@ class UserServiceTest {
         userService.save(thirdUser);
         userService.addFriends(firstUser.getId(), friendUser.getId());
         userService.addFriends(thirdUser.getId(), friendUser.getId());
-        assertEquals(userService.getCommonFriends(1,3), userService.getCommonFriends(3,1));
+        assertEquals(userService.getCommonFriends(1, 3), userService.getCommonFriends(3, 1));
     }
 }

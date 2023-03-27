@@ -158,7 +158,7 @@ public class UserControllerTest {
     public void shouldThrowExceptionWhenAddFriendWithIncorrectId() {
         User user1 = new User(0, "qw@qw.ru", "Login", "", "1900-03-25");
         userController.makeNewUser(user1);
-        assertThrows(NullPointerException.class, () -> userController.addFriend(user1.getId(),-1));
-        assertThrows(NullPointerException.class, () -> userController.addFriend(user1.getId(),9999));
+        assertThrows(NullPointerException.class, () -> userController.addFriend(user1.getId(), -1));
+        assertThrows(NullPointerException.class, () -> userController.addFriend(user1.getId(), 9999));
     }
 }
