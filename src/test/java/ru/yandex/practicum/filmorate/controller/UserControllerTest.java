@@ -67,12 +67,10 @@ public class UserControllerTest {
                 "", "1900-03-25");
         userController.makeNewUser(user);
         assertEquals(user.getLogin(), user.getName(), "Не удалось создать имя - копию логина");
-        User user2 = new User(0, "qw@qw.ru", "Login",
-                "   ", "1900-03-25");
+        User user2 = new User(0, "qw@qw.ru", "Login", "   ", "1900-03-25");
         userController.makeNewUser(user2);
         assertEquals(user2.getLogin(), user2.getName(), "Не удалось создать имя - копию логина");
-        User user3 = new User(0, "qw@qw.ru", "Login", null
-                , "1900-03-25");
+        User user3 = new User(0, "qw@qw.ru", "Login", null, "1900-03-25");
         userController.makeNewUser(user3);
         assertEquals(user3.getLogin(), user3.getName(), "Не удалось создать имя - копию логина");
     }
