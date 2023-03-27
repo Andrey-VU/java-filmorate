@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class Film {
-    private final Set<Integer> likes = new HashSet<>();   //  хранилище id тех, кто отметил фильм понравившимся
+    private final Set<Integer> likes = new HashSet<>();
     private int id;
     private String name;
     private String description;

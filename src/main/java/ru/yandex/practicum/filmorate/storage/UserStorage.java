@@ -10,7 +10,7 @@ public interface UserStorage {
 
     void update(User user);
 
-    void save(User user);
+    User save(User user);
 
     Optional<User> getUserById(int id);
 

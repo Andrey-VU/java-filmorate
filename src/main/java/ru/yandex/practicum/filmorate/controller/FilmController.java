@@ -8,9 +8,9 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/films")
@@ -22,10 +22,12 @@ public class FilmController {
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
+
     @PostMapping()
     public Film makeNewFilm(@Valid @RequestBody Film film) {
         return filmService.save(film);
     }
+
     @PutMapping()
     public Film updateFilm(@Valid @RequestBody Film film) {
         return filmService.update(film);
@@ -33,9 +35,7 @@ public class FilmController {
 
     @PutMapping("/{id}/like/{userId}")
     public Film likeFilm(@PathVariable int id, @PathVariable int userId){
-        Film film = filmService.getFilmById(id);
-        film.getLikes().add(userId);
-        return filmService.update(film);
+        return filmService.addLike(filmService.getFilmById(id), userId);
     }
 
     @GetMapping()
@@ -43,10 +43,10 @@ public class FilmController {
         return filmService.getFilms();
     }
 
-    @GetMapping("/popular")
-    public Collection<Film> getTopFilms(@RequestParam (required = false) String count) {
-        return count == null  ? filmService.getTopFilms(10) :
-                filmService.getTopFilms(Integer.parseInt(count));
+    @GetMapping(value = { "/popular", "/popular/{count}" })
+    public Collection<Film> getTopFilmsWithOptional(@RequestParam Optional<String> count) {
+        return count.isPresent() ? filmService.getTopFilms(Integer.parseInt(count.get())) :
+                filmService.getTopFilms(10);
     }
 
     @GetMapping("/{id}")

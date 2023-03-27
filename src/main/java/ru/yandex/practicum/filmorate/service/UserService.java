@@ -1,12 +1,12 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -14,16 +14,15 @@ public class UserService {
     private ValidateFilmAndUser validator = new ValidateFilmAndUser();
     private UserStorage userStorage;
 
-    @Autowired           // сообщаем Spring, что нужно передать в конструктор объект класса User
     public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
     public User save(User user) {
         validator.userValidate(user);
-        userStorage.save(user);
+        User newUser = userStorage.save(user);
         log.info("Зарегистрирован новый пользователь" + userStorage.getUserById(user.getId()).toString());
-        return userStorage.getUserById(user.getId()).get();   // .get() распаковываем optional объект
+        return newUser;
     }
 
     public User updateUser(User user) {
@@ -60,28 +59,24 @@ public class UserService {
     }
 
     public Collection<User> getCommonFriends(int id1, int id2) {
-        Collection<User> commonFriends = new ArrayList<>();
         User user2 = userStorage.getUserById(id2).orElseThrow(() -> new NullPointerException("Пользователь id "
                 + id2 + " не найден"));
         User user1 = userStorage.getUserById(id1).orElseThrow(() -> new NullPointerException("Пользователь id "
                 + id1 + " не найден"));
 
-        for (Integer friend : user2.getFriends()) {
-            if (user1.getFriends().contains(friend)) {
-                commonFriends.add(getUserById(friend));
-            }
-        }
-        return commonFriends;
+        return user2.getFriends().stream()
+                .filter(aCommonFriend -> user1.getFriends().contains(aCommonFriend))
+                .map(this::getUserById)
+                .collect(Collectors.toList());
     }
 
     public Collection<User> getFriends(int id) {
         User user = userStorage.getUserById(id).orElseThrow(() -> new NullPointerException("Пользователь id "
                 + id + " не найден"));
-        Collection<User> friends = new ArrayList<>();
-        for (Integer idOfFriends : user.getFriends()) {
-            friends.add(getUserById(idOfFriends));
-        }
-        return friends;
+
+        return user.getFriends().stream()
+                .map(this::getUserById)
+                .collect(Collectors.toList());
     }
 
     public User getUserById(int id) {

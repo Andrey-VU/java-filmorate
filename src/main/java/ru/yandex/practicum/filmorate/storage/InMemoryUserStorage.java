@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
@@ -29,9 +28,10 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         user.setId(generateId());
         users.put(user.getId(), user);
+        return user;
     }
 
     @Override

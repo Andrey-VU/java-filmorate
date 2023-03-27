@@ -5,21 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 
 @Service
 @Slf4j
 public class FilmService {
     private FilmStorage filmStorage;
+    @Autowired
+    private UserService userService;
     private ValidateFilmAndUser validator = new ValidateFilmAndUser();
 
-    @Autowired
     public FilmService(FilmStorage filmStorage) {
         this.filmStorage = filmStorage;
     }
-
 
     public Film save(Film film) {
         validator.filmValidate(film);
@@ -47,10 +47,12 @@ public class FilmService {
         return film;
     }
 
-    public void addLike(Film film, int idOfUser) {
+    public Film addLike(Film film, int idOfUser) {
+        userService.getListOfUsers().contains(idOfUser);
         validator.idValidate(idOfUser);
         film.getLikes().add(idOfUser);
-        filmStorage.update(film);
+        update(film);
+        return getFilmById(film.getId());
     }
 
     public Film deleteLike(Film film, int idOfUser) {
@@ -63,15 +65,10 @@ public class FilmService {
     public Collection<Film> getTopFilms(int count) {
         ArrayList<Film> topFilms = new ArrayList<>();
         filmStorage.getFilms().stream()
-                .sorted(new FilmComparator())                 // отсортировали по количеству лайков
+                .sorted((Film a, Film b)
+                        -> b.getLikes().size() - a.getLikes().size())   // отсортировали по количеству лайков
                 .limit(count)
                 .forEach(topFilms::add);
-        return topFilms;                                  // вернули топ-лист фильмов
+        return topFilms;
     }
-
-    class FilmComparator implements Comparator<Film>{
-            public int compare(Film a, Film b){
-                return b.getLikes().size() - a.getLikes().size();
-            }
-        }
 }
