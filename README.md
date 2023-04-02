@@ -5,18 +5,19 @@ Template repository for Filmorate project.
 
 ## Примеры запросов 
 
-### Вывести все фильмы с определенным жанром 
+```
+--Вывести все фильмы с определенным жанром 
 SELECT f.film_id
 FROM films AS f
 JOIN jenre AS j ON j.jenre_id = f.jenre_id
-WHERE j.name = 'this_name'; 
+WHERE j.name = 'this_name';
 
-### Вывести названия всех фильмов, которые нравятся пользователям с id 1  
+--Вывести названия всех фильмов, которые нравятся пользователям с id 1  
 SELECT f.name
 FROM users AS u
 JOIN fanList AS fl ON f.film_id = fl.film_id
 WHERE fl.user_id = 1; 
-
+```
 
 
 
