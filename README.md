@@ -5,13 +5,14 @@ Template repository for Filmorate project.
 
 ## Примеры запросов 
 
-```
+```roomsql
 --Вывести все фильмы с определенным жанром 
 SELECT f.film_id
 FROM films AS f
 JOIN jenre AS j ON j.jenre_id = f.jenre_id
 WHERE j.name = 'this_name';
-
+```
+```roomsql
 --Вывести названия всех фильмов, которые нравятся пользователям с id 1  
 SELECT f.name
 FROM users AS u
