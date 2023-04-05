@@ -29,20 +29,20 @@ public class FilmControllerTest {
     @Test
     public void shouldMakeFilm() {
         Film testFilm = new Film(0, "Assa", "About",
-                "1900-03-25", 120);
+                "1900-03-25", 120, null, null);
         Film filmFromStorage = controller.makeNewFilm(testFilm);
         testFilm = new Film(filmFromStorage.getId(), "Assa", "About",
-                "1900-03-25", 120);
+                "1900-03-25", 120, null, null);
         assertEquals(testFilm, filmFromStorage, "Фильм не внесён в базу данных");
     }
 
     @Test
     public void shouldUpdateFilm() {
-        Film film = new Film(0, "Assa", "About", "1900-03-25", 120);
+        Film film = new Film(0, "Assa", "About", "1900-03-25", 120, null, null);
         Film filmFromStorage = controller.makeNewFilm(film);
         Film updateForFilm = new Film(filmFromStorage.getId(), "Film Updated",
                 "New film update decription",
-                "1989-04-17", 190);
+                "1989-04-17", 190, null, null);
         Film fromStorageAfterUpdate = controller.updateFilm(updateForFilm);
         assertEquals(updateForFilm, fromStorageAfterUpdate, "Фильм не удалось обновить");
     }
@@ -54,9 +54,9 @@ public class FilmControllerTest {
 
     @Test
     public void shouldThrowNullPointerWhenUpdateUserWhithIncorrectId() {
-        Film film = new Film(0, "Assa", "About", "1900-03-25", 120);
+        Film film = new Film(0, "Assa", "About", "1900-03-25", 120, null, null);
         controller.makeNewFilm(film);
-        Film film999 = new Film(999, "Assa2", "About", "1900-03-25", 1);
+        Film film999 = new Film(999, "Assa2", "About", "1900-03-25", 1, null, null);
         assertThrows(NullPointerException.class, () -> controller.updateFilm(film999));
     }
 }
