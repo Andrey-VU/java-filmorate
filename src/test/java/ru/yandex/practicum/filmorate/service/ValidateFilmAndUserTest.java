@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Rate;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -19,10 +20,11 @@ class ValidateFilmAndUserTest {
 
     @BeforeEach
     void beforeEach() {
+        Rate rateFirst = new Rate(1, "G");
         validateUser = new ValidateFilmAndUser();
         user = new User(0, "qw@qw.ru", "Login", "Name", "1968-03-25");
         validateFilm = new ValidateFilmAndUser();
-        film = new Film(0, "Assa", "About", "1968-03-25", 120, null, null);
+        film = new Film("Assa", "About", "1968-03-25", 120, rateFirst);
     }
 
     @Test

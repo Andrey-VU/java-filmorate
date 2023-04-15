@@ -1,17 +1,34 @@
 package ru.yandex.practicum.filmorate.model;
 
-public enum Rate {
-    G,
-    PG,
-    PG_13,
-    R,
-    NC_17
+import java.util.HashMap;
+import java.util.Map;
+
+public class Rate {
+    private Map<Integer,String> allRates = new HashMap<>();
+    private int id;
+    private String name;
+
+    public Rate(int id, String name) {
+        allRates.put(1, "G");
+        allRates.put(2, "PG");
+        allRates.put(3, "PG-13");
+        allRates.put(4, "R");
+        allRates.put(5, "NC-17");
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getRateId() {
+        return id;
+    }
+
+    public void setRateId(int id) {
+        this.id = id;
+        this.name = allRates.get(id);
+    }
+
+    public String getRateName() {
+        return name;
+    }
+
 }
-
-
-/*
-для перевода PG_13 и NC_17
-Можно использовать enum, в маппере потом из строки методом valueOf можно получать enum + toString
-в обратном направлении. Можно задать поле внутри енама со значением,
- которое мы хотим видеть в бд и мапить енам в ту и обратную сторону по этому полю
- */
