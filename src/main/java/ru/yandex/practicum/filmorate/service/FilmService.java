@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -22,9 +23,12 @@ public class FilmService {
     }
 
     public Film save(Film film) {
-       //  validator.filmValidate(film);
+         validator.filmValidate(film);
          filmDbStorage.save(film);
-         log.info("В базу добавлен новый фильм" + getFilmById(film.getId()).toString());
+
+         log.info("В базу добавлен новый фильм "  + getFilmById(film.getId()).toString());
+
+
          return filmDbStorage.getFilmById(film.getId()).get();
     }
 

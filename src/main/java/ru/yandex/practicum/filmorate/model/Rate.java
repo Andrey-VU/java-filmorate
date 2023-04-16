@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Rate {
     private Map<Integer,String> allRates = new HashMap<>();
@@ -31,4 +32,18 @@ public class Rate {
         return name;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // проверяем адреса объектов
+        if (obj == null) return false; // проверяем ссылку на null
+        if (this.getClass() != obj.getClass()) return false; // сравниваем классы
+        Rate otherRate = (Rate) obj; // открываем доступ к полям другого объекта
+        return (id == otherRate.id) && // проверяем все поля
+               Objects.equals(name, otherRate.name);
+    }
 }

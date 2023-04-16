@@ -29,7 +29,7 @@ public class FilmControllerTest {
     }
 
     @Test
-    public void shouldMakeFilm() {
+    public void shouldMakeAndReturnFilm() {
         Film testFilm = new Film("Assa", "About",
                 "1900-03-25", 120, new Rate(1, "G"));
         Film filmFromStorage = controller.makeNewFilm(testFilm);
