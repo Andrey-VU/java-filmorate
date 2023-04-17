@@ -17,23 +17,22 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public void save(Film film) {
-//        film.setId(generateId());
-//        films.put(film.getId(), film);
+        film.setId(generateId());
+        films.put(film.getId(), film);
     }
 
     @Override
     public void update(Film film) {
-//        getFilmById(film.getId()).orElseThrow(() -> {
-//            log.error("В базе отсутствует " + film + " с указанным Id. Обновление невозможно");
-//            throw new NullPointerException("Фильм с таким id не найден. Обновление невозможно");
-//        });
-//        films.put(id, film);
+        getFilmById(film.getId()).orElseThrow(() -> {
+            log.error("В базе отсутствует " + film + " с указанным Id. Обновление невозможно");
+            throw new NullPointerException("Фильм с таким id не найден. Обновление невозможно");
+        });
+        films.put(id, film);
     }
 
     @Override
     public Optional<Film> getFilmById(int id) {
-//        return Optional.ofNullable(films.get(id));
-                return null;
+        return Optional.ofNullable(films.get(id));
     }
 
     @Override

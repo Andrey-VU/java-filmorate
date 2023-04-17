@@ -29,17 +29,21 @@ public class FilmController {
         return filmService.getFilmById(id).get();
     }
 
-
     @PostMapping()
     public Film makeNewFilm(@Valid @RequestBody Film film) {
         return filmService.save(film);
     }
 
-//
-//    @PutMapping()
-//    public Film updateFilm(@Valid @RequestBody Film film) {
-//        return filmService.update(film);
-//    }
+    @PutMapping()
+    public Film updateFilm(@Valid @RequestBody Film film) {
+        return filmService.update(film);
+    }
+
+    @GetMapping()
+    public Collection<Film> getFilms() {
+        return filmService.getFilms();
+    }
+
 //
 //    @PutMapping("/{id}/like/{userId}")
 //    public Film likeFilm(@PathVariable int id, @PathVariable int userId) {

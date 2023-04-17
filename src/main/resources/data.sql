@@ -7,6 +7,7 @@ INSERT INTO rate_mpa (rate_name) VALUES 'G', 'PG', 'PG-13 ', 'R', 'NC-17';
 -- 'R' лицам до 17 лет просматривать фильм можно только в присутствии взрослого,
 -- 'NC-17 лицам до 18 лет просмотр запрещён.
 
+
 --
 --INSERT INTO users (name, birthday, login, email) VALUES ('name', '1979-12-25', 'login', 'e@email.ru');
 --INSERT INTO films (name, description, releasedate, duration, rate_id) VALUES ('BlackAndRad', 'about Life',

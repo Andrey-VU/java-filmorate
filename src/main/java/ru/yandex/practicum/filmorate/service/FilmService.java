@@ -25,10 +25,7 @@ public class FilmService {
     public Film save(Film film) {
          validator.filmValidate(film);
          filmDbStorage.save(film);
-
          log.info("В базу добавлен новый фильм "  + getFilmById(film.getId()).toString());
-
-
          return filmDbStorage.getFilmById(film.getId()).get();
     }
 
@@ -36,6 +33,19 @@ public class FilmService {
          validator.idValidate(id);
          return filmDbStorage.getFilmById(id);
     }
+
+    public Film update(Film film) {
+        validator.filmValidate(film);
+        filmDbStorage.update(film);
+        log.info("Информация о фильме " + getFilmById(film.getId()).toString() + "обновлена");
+        return filmDbStorage.getFilmById(film.getId()).get();
+    }
+
+    public Collection<Film> getFilms() {
+        log.info("Количество фильмов в хранилище " + filmDbStorage.getFilms().size());
+        return filmDbStorage.getFilms();
+    }
+
 
 
 //    private FilmStorage filmStorage;
@@ -47,19 +57,6 @@ public class FilmService {
 //        this.filmStorage = filmStorage;
 //    }
 //
-//    public Film save(Film film) {
-//        validator.filmValidate(film);
-//        filmStorage.save(film);
-//        log.info("В базу добавлен новый фильм" + getFilmById(film.getId()).toString());
-//        return filmStorage.getFilmById(film.getId()).get();
-//    }
-//
-//    public Film update(Film film) {
-//        validator.filmValidate(film);
-//        filmStorage.update(film);
-//        log.info("Информация о фильме " + getFilmById(film.getId()).toString() + "обновлена");
-//        return filmStorage.getFilmById(film.getId()).get();
-//    }
 //
 //    public Collection<Film> getFilms() {
 //        log.info("Количество фильмов в хранилище " + filmStorage.getFilms().size());

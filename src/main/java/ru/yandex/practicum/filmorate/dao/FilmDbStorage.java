@@ -16,6 +16,8 @@ import ru.yandex.practicum.filmorate.model.Rate;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -32,7 +34,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public void save(Film film) {
-        String sqlQueryFilm = "insert into films(name, description, releaseDate, duration, rate_id) " +
+        String sqlQueryFilm = "insert into films(name, description, release_date, duration, rate_id) " +
                 "values (?, ?, ?, ?, ?)" ;
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -49,22 +51,29 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public void update(@NotNull Film film) throws ValidationException {
-
+        String sqlQuery = "update films set " +
+                "name = ?, description = ?, release_date = ?, duration = ?, rate_id = ? " +
+                "where film_id = ?";
+        jdbcTemplate.update(sqlQuery,
+                film.getName(),
+                film.getDescription(),
+                film.getReleaseDate(),
+                film.getDuration(),
+                film.getRate().getRateId(),
+                film.getId());
     }
 
     @Override
     public Optional<Film> getFilmById(int id) {
-
         SqlRowSet filmsRows = jdbcTemplate.queryForRowSet("SELECT f.*, rm.rate_name " +
                 "FROM films AS f JOIN rate_mpa AS rm ON f.rate_id = rm.rate_id " +
                 "WHERE f.film_id = ?", id);
-
         if (filmsRows.next()) {
             Film film = new Film(
                     filmsRows.getInt("film_id"),
                     filmsRows.getString("name"),
                     filmsRows.getString("description"),
-                    filmsRows.getString("releasedate"),
+                    filmsRows.getString("release_date"),
                     filmsRows.getInt("duration"),
                     new Rate(filmsRows.getInt("rate_id"),
                             filmsRows.getString("rate_name")));
@@ -73,20 +82,30 @@ public class FilmDbStorage implements FilmStorage {
 
             return Optional.of(film);
         } else {
-            log.info("Пользователь с идентификатором {} не найден.", id);
+            log.info("Фильм с идентификатором {} не найден.", id);
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Collection<Film> getFilms() {
+        String sql = "SELECT * FROM films AS f JOIN rate_mpa AS rm ON f.rate_id = rm.rate_id";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilms(rs));
+    }
+
+    private Film makeFilms(ResultSet rs) throws SQLException {
+        return new Film(
+                rs.getInt("film_id"),
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getString("release_date"),
+                rs.getInt("duration"),
+                new Rate(rs.getInt("rate_id"),
+                        rs.getString("rate_name")));
     }
 
     @Override
     public int generateId() {
         return 0;
     }
-
-    @Override
-    public Collection<Film> getFilms() {
-        return null;
-    }
-
-
 }
