@@ -5,14 +5,13 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Rate;
+import ru.yandex.practicum.filmorate.model.RateMpa;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.sql.PreparedStatement;
@@ -43,7 +42,7 @@ public class FilmDbStorage implements FilmStorage {
             stmt.setString(2, film.getDescription());
             stmt.setString(3, film.getReleaseDate());
             stmt.setInt(4, film.getDuration());
-            stmt.setInt(5, film.getRate().getRateId());
+            stmt.setInt(5, film.getRate().getId());
             return stmt;
         }, keyHolder);
         film.setId(keyHolder.getKey().intValue());
@@ -59,7 +58,7 @@ public class FilmDbStorage implements FilmStorage {
                 film.getDescription(),
                 film.getReleaseDate(),
                 film.getDuration(),
-                film.getRate().getRateId(),
+                film.getRate().getId(),
                 film.getId());
     }
 
@@ -75,7 +74,7 @@ public class FilmDbStorage implements FilmStorage {
                     filmsRows.getString("description"),
                     filmsRows.getString("release_date"),
                     filmsRows.getInt("duration"),
-                    new Rate(filmsRows.getInt("rate_id"),
+                    new RateMpa(filmsRows.getInt("rate_id"),
                             filmsRows.getString("rate_name")));
 
             log.info("Найден фильм: {} {}", film.getId(), film.getName());
@@ -101,7 +100,7 @@ public class FilmDbStorage implements FilmStorage {
                 rs.getString("description"),
                 rs.getString("release_date"),
                 rs.getInt("duration"),
-                new Rate(rs.getInt("rate_id"),
+                new RateMpa(rs.getInt("rate_id"),
                         rs.getString("rate_name")));
     }
 

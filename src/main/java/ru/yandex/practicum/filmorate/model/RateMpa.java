@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Rate {
+public class RateMpa {
     private Map<Integer,String> allRates = new HashMap<>();
     private int id;
     private String name;
 
-    public Rate(int id, String name) {
+    public RateMpa(int id, String name) {
         allRates.put(1, "G");
         allRates.put(2, "PG");
         allRates.put(3, "PG-13");
@@ -19,7 +19,7 @@ public class Rate {
         this.name = name;
     }
 
-    public int getRateId() {
+    public int getId() {
         return id;
     }
 
@@ -28,7 +28,7 @@ public class Rate {
         this.name = allRates.get(id);
     }
 
-    public String getRateName() {
+    public String getName() {
         return name;
     }
 
@@ -42,7 +42,7 @@ public class Rate {
         if (this == obj) return true; // проверяем адреса объектов
         if (obj == null) return false; // проверяем ссылку на null
         if (this.getClass() != obj.getClass()) return false; // сравниваем классы
-        Rate otherRate = (Rate) obj; // открываем доступ к полям другого объекта
+        RateMpa otherRate = (RateMpa) obj; // открываем доступ к полям другого объекта
         return (id == otherRate.id) && // проверяем все поля
                Objects.equals(name, otherRate.name);
     }
