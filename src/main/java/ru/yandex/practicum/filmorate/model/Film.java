@@ -24,37 +24,6 @@ public class Film {
         this.duration = duration;
         this.rate = rate;
     }
-
-    public class Genre {
-        private Map<Integer,String> allGenres = new HashMap<>();
-        private Integer id;
-        private String name;
-
-        private Genre(int id, String name) {
-            allGenres.put(1, "Комедия");
-            allGenres.put(2, "Драма");
-            allGenres.put(3, "Мультфильм");
-            allGenres.put(4, "Триллер");
-            allGenres.put(5, "Документальный");
-            allGenres.put(6, "Боевик");
-            this.id = id;
-            this.name = name;
-        }
-
-        public int getGenreId() {
-            return id;
-        }
-
-        public String getGenreName() {
-            return name;
-        }
-
-        public void setGenreId(Integer id) {
-            this.id = id;
-            this.name = allGenres.get(id);
-        }
-    }
-
 }
 
 

@@ -44,29 +44,6 @@ public class FilmController {
         return filmService.getFilms();
     }
 
-//
-//    @PutMapping("/{id}/like/{userId}")
-//    public Film likeFilm(@PathVariable int id, @PathVariable int userId) {
-//        return filmService.addLike(filmService.getFilmById(id), userId);
-//    }
-//
-//    @GetMapping()
-//    public Collection<Film> getFilms() {
-//        return filmService.getFilms();
-//    }
-//
-//    @GetMapping(value = {"/popular", "/popular/{count}"})
-//    public Collection<Film> getTopFilmsWithOptional(@RequestParam Optional<String> count) {
-//        return count.isPresent() ? filmService.getTopFilms(Integer.parseInt(count.get())) :
-//                filmService.getTopFilms(10);
-//    }
-
-
-//    @DeleteMapping("/{id}/like/{userId}")
-//    public Film unlikeFilm(@PathVariable int id, @PathVariable int userId) {
-//        return filmService.deleteLike(getFilmById(id), userId);
-//    }
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNullFilm(final NullPointerException e) {
