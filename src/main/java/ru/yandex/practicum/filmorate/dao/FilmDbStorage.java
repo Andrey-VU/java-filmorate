@@ -51,9 +51,9 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public void update(@NotNull Film film) throws ValidationException {
-        String sqlQuery = "update films set " +
+        String sqlQuery = "UPDATE films set " +
                 "name = ?, description = ?, release_date = ?, duration = ?, rate_id = ? " +
-                "where film_id = ?";
+                "WHERE film_id = ?";
         jdbcTemplate.update(sqlQuery,
                 film.getName(),
                 film.getDescription(),
@@ -83,7 +83,8 @@ public class FilmDbStorage implements FilmStorage {
             return Optional.of(film);
         } else {
             log.info("Фильм с идентификатором {} не найден.", id);
-            return Optional.empty();
+            throw new NullPointerException("Фильм с id " + id + "  не найден");
+            //return Optional.empty();
         }
     }
 

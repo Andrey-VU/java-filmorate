@@ -6,7 +6,6 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
 @NoArgsConstructor
 @Builder
 public class User {
@@ -16,11 +15,18 @@ public class User {
     private String email;
     @NonNull
     private String login;
-    @NonNull
+
     private String name;
-    @NonNull
     private String birthday;
+
+    public User(@NonNull String email, @NonNull String login, String name, String birthday) {
+        this.email = email;
+        this.login = login;
+        this.name = name;
+        this.birthday = birthday;
+    }
 }
+
 
 
 /*

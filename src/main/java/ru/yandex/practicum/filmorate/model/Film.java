@@ -5,32 +5,25 @@ import java.util.*;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @NoArgsConstructor
 public class Film {
     private final Set<Integer> likes = new HashSet<>();
     private final TreeSet<Genre> genre = new TreeSet<>();
     private int id;
-    @NonNull
     private String name;
-    @NonNull
     private String description;
-    @NonNull
     private String releaseDate;
-    @NonNull
     private int duration;
-    @NonNull
     private Rate rate;
 
-//    public Film(String name, String description, String releaseDate, int duration, Rate rate) {
-////        this.id = id;
-//        this.name = name;
-//        this.description = description;
-//        this.releaseDate = releaseDate;
-//        this.duration = duration;
-//        this.rate = rate;
-//    }
+    public Film(String name, String description, String releaseDate, int duration, Rate rate) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.rate = rate;
+    }
 
     public class Genre {
         private Map<Integer,String> allGenres = new HashMap<>();

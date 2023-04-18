@@ -28,17 +28,19 @@ public class UserDbStorage implements UserStorage {
         this.jdbcTemplate=jdbcTemplate;
     }
 
+
+
     @Override
     public User save(User user) {
-        String sqlQueryUser = "insert into films(user_name, birthday, login, email) " +
+        String sqlQueryUser = "insert into users(email, login, user_name, birthday ) " +
                 "values (?, ?, ?, ?)" ;
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQueryUser, new String[]{"user_id"});
-            stmt.setString(1, user.getName());
-            stmt.setString(2, user.getBirthday());
-            stmt.setString(3, user.getLogin());
-            stmt.setString(4, user.getEmail());
+            stmt.setString(1, user.getEmail());
+            stmt.setString(2, user.getLogin());
+            stmt.setString(3, user.getName());
+            stmt.setString(4, user.getBirthday());
             return stmt;
         }, keyHolder);
         user.setId(keyHolder.getKey().intValue());
@@ -51,23 +53,24 @@ public class UserDbStorage implements UserStorage {
         if (usersRows.next()) {
             User user = new User(
                     usersRows.getInt("user_id"),
-                    usersRows.getString("user_name"),
-                    usersRows.getString("birthday"),
+                    usersRows.getString("email"),
                     usersRows.getString("login"),
-                    usersRows.getString("email"));
+                    usersRows.getString("user_name"),
+                    usersRows.getString("birthday"));
 
             log.info("Найден пользователь: {} {}", user.getId(), user.getName());
 
             return Optional.of(user);
         } else {
             log.info("Пользователь с идентификатором {} не найден.", id);
-            return Optional.empty();
+            throw new NullPointerException("Пользователь с id " + id + " не найден");
+            //return Optional.empty();
         }
     }
 
     @Override
     public void update(User user) {
-        String sqlQuery = "UPDATE user set " +
+        String sqlQuery = "UPDATE users set " +
                 "user_name = ?, birthday = ?, login = ?, email = ? " +
                 "WHERE user_id = ?";
 
@@ -88,10 +91,10 @@ public class UserDbStorage implements UserStorage {
     private User makeUsers(ResultSet rs) throws SQLException {
         return new User(
                 rs.getInt("user_id"),
-                rs.getString("user_name"),
-                rs.getString("birthday"),
+                rs.getString("email"),
                 rs.getString("login"),
-                rs.getString("email"));
+                rs.getString("user_name"),
+                rs.getString("birthday"));
     }
 
     @Override
