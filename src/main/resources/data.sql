@@ -1,5 +1,5 @@
 INSERT INTO genre (genre_name) VALUES 'Комедия', 'Драма', 'Мультфильм', 'Триллер', 'Документальный', 'Боевик';
-INSERT INTO rate_mpa (rate_name) VALUES 'G', 'PG', 'PG-13 ', 'R', 'NC-17';
+INSERT INTO rate_mpa (rate_name) VALUES 'G', 'PG', 'PG-13', 'R', 'NC-17';
 
 -- 'G' у фильма нет возрастных ограничений,
 -- 'PG' детям рекомендуется смотреть фильм с родителями,

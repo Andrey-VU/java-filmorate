@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.RateMpa;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.service.MpaService;
 
 import java.util.Collection;
@@ -23,12 +23,12 @@ public class MpaController {
     }
 
     @GetMapping()
-    public Collection<RateMpa> getRate() {
+    public Collection<Mpa> getAll() {
         return mpaService.getRates();
     }
 
     @GetMapping("/{id}")
-    public RateMpa getRateById(@PathVariable int id) {
+    public Mpa getMpaById(@PathVariable int id) {
         return mpaService.getRateById(id).get();
     }
 

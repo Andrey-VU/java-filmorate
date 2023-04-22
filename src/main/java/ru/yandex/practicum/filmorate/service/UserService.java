@@ -44,9 +44,10 @@ public class UserService {
                 + idUser + " не найден"));
         User friend = userDbStorage.getUserById(idFriend).orElseThrow(() -> new NullPointerException("Пользователь id "
                 + idFriend + " не найден"));
-        user.getFriends().add(idFriend);
-        friend.getFriends().add(idUser);        // обеспечиваем взаимность
-        return getFriends(idUser);
+        //user.getFriends().add(idFriend);
+        //friend.getFriends().add(idUser);        // вписываем user в список друзей/последователей friend
+        userDbStorage.addFriend(idUser, idFriend);
+        return getFriends(idFriend);
     }
 
     public void deleteFromFriends(int idUser, int idFriend) {
@@ -64,20 +65,15 @@ public class UserService {
         User user1 = userDbStorage.getUserById(id1).orElseThrow(() -> new NullPointerException("Пользователь id "
                 + id1 + " не найден"));
 
-        return user2.getFriends().stream()
-                .filter(aCommonFriend -> user1.getFriends().contains(aCommonFriend))
-                .map(this::getUserById)
-                .collect(Collectors.toList());
+        return userDbStorage.getCommonFriends(id1, id2);
     }
 
     public Collection<User> getFriends(int id) {
-        User user = userDbStorage.getUserById(id).orElseThrow(() -> new NullPointerException("Пользователь id "
-                + id + " не найден"));
-
-        return user.getFriends().stream()
-                .map(this::getUserById)
-                .collect(Collectors.toList());
+//        User user = userDbStorage.getUserById(id).orElseThrow(() -> new NullPointerException("Пользователь id "
+//                + id + " не найден"));
+        return userDbStorage.getFriends(id);
     }
+
 
     public User getUserById(int id) {
         User user = userDbStorage.getUserById(id).orElseThrow(() -> new NullPointerException("Пользователь id "

@@ -40,7 +40,7 @@ class UserServiceTest {
 
     @Test
     void shouldGetUserById() {
-        assertThrows(NullPointerException.class, () -> userService.getUserById(1));
+                assertThrows(NullPointerException.class, () -> userService.getUserById(1));
         userService.save(firstUser);
         assertEquals(firstUser, userService.getUserById(1), "пользователь не вернулся из хранилища по id ");
     }
@@ -62,8 +62,6 @@ class UserServiceTest {
 
         assertEquals(friendOfFirst, userService.getFriends(firstUser.getId()),
                 "новый друг не добавлен");
-        assertEquals(friendOfFriend.toString(), userService.getFriends(friendUser.getId()).toString(),
-                "нарушен принцип взаимности при добавлении в друзья");
     }
 
     @Test

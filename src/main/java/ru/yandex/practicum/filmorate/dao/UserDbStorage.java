@@ -28,11 +28,9 @@ public class UserDbStorage implements UserStorage {
         this.jdbcTemplate=jdbcTemplate;
     }
 
-
-
     @Override
     public User save(User user) {
-        String sqlQueryUser = "insert into users(email, login, user_name, birthday ) " +
+        String sqlQueryUser = "insert into users(email, login, user_name, birthday) " +
                 "values (?, ?, ?, ?)" ;
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -64,7 +62,6 @@ public class UserDbStorage implements UserStorage {
         } else {
             log.info("Пользователь с идентификатором {} не найден.", id);
             throw new NullPointerException("Пользователь с id " + id + " не найден");
-            //return Optional.empty();
         }
     }
 
@@ -97,8 +94,41 @@ public class UserDbStorage implements UserStorage {
                 rs.getString("birthday"));
     }
 
+    public Collection<User> getFriends(int id) {
+        String sqlQuery = "SELECT u.* " +
+                "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
+                "WHERE f_user_id = " + id ;
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUsers(rs));
+    }
+
+    public Collection<User> getCommonFriends(int id1, int id2) {
+        String sqlQuery =
+                "SELECT u.* " +
+                "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
+                "WHERE f_user_id = " + id2 +
+                " INTERSECT " +
+                "SELECT u.* " +
+                "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
+                "WHERE f_user_id = " + id1 ;
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUsers(rs));
+    }
+
+    public void addFriend(int idUser, int idFriend) {
+        String sqlQuery = "INSERT INTO friends " +
+                "(f_user_id, friend_to) " +
+                "values (?, ?) ";
+        jdbcTemplate.update(sqlQuery,
+                idUser,
+                idFriend);
+    }
+
+
+
+
     @Override
     public int generateId() {
         return 0;
     }
+
 }

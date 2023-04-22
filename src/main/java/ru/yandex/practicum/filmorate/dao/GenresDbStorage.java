@@ -24,34 +24,32 @@ public class GenresDbStorage {
 
     public Optional<Genre> getGenreById(int id) {
         SqlRowSet genresRows = jdbcTemplate.queryForRowSet("SELECT * " +
-                "FROM genres " +
-                "WHERE genres_id = ?", id);
+                "FROM genre " +
+                "WHERE genre_id = ?", id);
         if (genresRows.next()) {
             Genre genre = new Genre(
-                    genresRows.getInt("genre_id"),
-                    genresRows.getString("genre_name"));
-
+                    genresRows.getString("genre_name"),
+                    genresRows.getInt("genre_id")
+                    );
             log.info("Найден жанр: {} {}", genre.getId(), genre.getName());
-
             return Optional.of(genre);
         } else {
             log.info("Жанр с идентификатором {} не найден.", id);
             throw new NullPointerException("Жанр с id " + id + "  не найден");
-
         }
     }
 
     public Collection<Genre> getGenres() {    // получение списка всех жанров
-        String sql = "SELECT * FROM genre";
+        String sql = "SELECT * FROM genre " +
+                "ORDER BY genre_id ASC";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeGenres(rs));
     }
 
     private Genre makeGenres(ResultSet rs) throws SQLException {
         return new Genre(
-                rs.getInt("genre_id"),
-                rs.getString("genre_name"));
+                rs.getString("genre_name"),
+                rs.getInt("genre_id")
+                );
     }
-
-
 }
 

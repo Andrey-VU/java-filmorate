@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.MpaDbStorage;
-import ru.yandex.practicum.filmorate.model.RateMpa;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -19,11 +19,11 @@ public class MpaService {
         this.mpaDbStorage = mpaDbStorage;
     }
 
-    public Collection<RateMpa> getRates() {
+    public Collection<Mpa> getRates() {
         return mpaDbStorage.getRates();
     }
 
-    public Optional<RateMpa> getRateById(int id) {
-        return mpaDbStorage.getRateById(id);
+    public Optional<Mpa> getRateById(int id) {
+        return mpaDbStorage.getMpaById(id);
     }
 }

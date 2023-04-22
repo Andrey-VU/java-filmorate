@@ -32,7 +32,7 @@ public class UserController {
         return userService.updateUser(user);
     }
 
-    @PutMapping("/{id}/friends/{friendId}")
+    @PutMapping("/{id}/friends/{friendId}")                             // сделано
     public Collection<User> addFriend(@PathVariable int id, @PathVariable int friendId) {
         return userService.addFriends(id, friendId);
     }
@@ -42,12 +42,12 @@ public class UserController {
         return userService.getListOfUsers();
     }
 
-    @GetMapping("/{id}/friends/common/{otherId}")
+    @GetMapping("/{id}/friends/common/{otherId}")                         // в разработке
     public Collection<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.getCommonFriends(id, otherId);
     }
 
-    @GetMapping("/{id}/friends")
+    @GetMapping("/{id}/friends")                                              // сделано
     public Collection<User> getFriends(@PathVariable int id) {
         return userService.getFriends(id);
     }

@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.jdbc.SqlGroup;
 import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -117,9 +114,9 @@ public class UserControllerTest {
     @Test
     public void shouldGetFriendsOfUserById() {
         Collection<User> tmpListOfFriends = new ArrayList<>();
-        User user1 = new User("qw@qw.ru", "Login", "", "1900-03-25");
-        User user2 = new User("amil@mail.ru", "Login", "   ", "1900-03-25");
-        User user3 = new User("test@mail.ru", "dolore", "lodore", "1996-08-20");
+        User user1 = new User("1qw@qw.ru", "Login1", "lodore1", "1900-03-25");
+        User user2 = new User("2qw@qw.ru", "Login2", "lodore2", "1900-03-25");
+        User user3 = new User("3qw@qw.ru", "Login3", "lodore3", "1996-08-20");
         userController.makeNewUser(user1);
         userController.makeNewUser(user2);
         userController.makeNewUser(user3);
