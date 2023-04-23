@@ -14,7 +14,6 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -101,7 +100,7 @@ public class FilmControllerTest {
         Collection<Genre> genres1 = new HashSet<>();
         genres1.addAll(genres);
         Film updateForFilm = new Film(filmFromStorage.getId(), "Assa", "About", "1900-03-25",
-                120, 1,  genres1);
+                120, 1, genres1);
         Film fromStorageAfterUpdate = controller.updateFilm(updateForFilm);
         assertEquals(updateForFilm, fromStorageAfterUpdate, "Фильм не удалось обновить");
     }
@@ -146,7 +145,6 @@ public class FilmControllerTest {
         Film fromStorageAfterUpdate = controller.updateFilm(updateForFilm);
         assertEquals(updateForFilm, fromStorageAfterUpdate, "Фильм не удалось обновить");
     }
-
 
 
     @Test

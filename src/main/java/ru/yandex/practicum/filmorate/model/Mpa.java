@@ -1,7 +1,5 @@
 package ru.yandex.practicum.filmorate.model;
 
-import java.util.Objects;
-
 public class Mpa {
     private String name;
     private int id;

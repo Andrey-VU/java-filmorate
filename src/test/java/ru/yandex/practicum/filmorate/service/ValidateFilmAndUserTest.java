@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ValidateFilmAndUserTest {
     ValidateFilmAndUser validateUser;

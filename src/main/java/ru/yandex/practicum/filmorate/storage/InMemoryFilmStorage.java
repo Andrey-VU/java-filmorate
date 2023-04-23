@@ -1,5 +1,4 @@
 package ru.yandex.practicum.filmorate.storage;
-//
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,8 +12,8 @@ import java.util.Optional;
 @Component
 @Deprecated
 public class InMemoryFilmStorage implements FilmStorage {
-    private int id = 0;
     private final HashMap<Integer, Film> films = new HashMap<>();
+    private int id = 0;
 
     @Override
     public void save(Film film) {

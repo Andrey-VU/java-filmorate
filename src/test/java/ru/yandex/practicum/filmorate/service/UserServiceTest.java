@@ -16,16 +16,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class UserServiceTest {
+    private final JdbcTemplate jdbcTemplate;
     User firstUser;
     UserService userService;
-    private final JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     public void beforeEach() {
@@ -40,7 +41,7 @@ class UserServiceTest {
 
     @Test
     void shouldGetUserById() {
-                assertThrows(NullPointerException.class, () -> userService.getUserById(1));
+        assertThrows(NullPointerException.class, () -> userService.getUserById(1));
         userService.save(firstUser);
         assertEquals(firstUser, userService.getUserById(1), "пользователь не вернулся из хранилища по id ");
     }
