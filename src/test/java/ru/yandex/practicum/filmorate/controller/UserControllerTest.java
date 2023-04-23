@@ -117,6 +117,27 @@ public class UserControllerTest {
         User user1 = new User("1qw@qw.ru", "Login1", "lodore1", "1900-03-25");
         User user2 = new User("2qw@qw.ru", "Login2", "lodore2", "1900-03-25");
         User user3 = new User("3qw@qw.ru", "Login3", "lodore3", "1996-08-20");
+        User user4 = new User("4qw@qw.ru", "Login4", "lodore4", "1996-08-20");
+        userController.makeNewUser(user1);
+        userController.makeNewUser(user2);
+        userController.makeNewUser(user3);
+        userController.makeNewUser(user4);
+        tmpListOfFriends.add(user2);
+        tmpListOfFriends.add(user3);
+        tmpListOfFriends.add(user4);
+        userController.addFriend(user1.getId(), user2.getId());
+        userController.addFriend(user1.getId(), user3.getId());
+        userController.addFriend(user1.getId(), user4.getId());
+        assertEquals(tmpListOfFriends, userController.getFriends(user1.getId()), "Не удалось сформировать или " +
+                "вернуть список друзей");
+    }
+
+    @Test
+    public void shouldGetFriendsOfUserByIdWithEmptyFieldsName() {
+        Collection<User> tmpListOfFriends = new ArrayList<>();
+        User user1 = new User("1qw@qw.ru", "Login1", "     ", "1900-03-25");
+        User user2 = new User("2qw@qw.ru", "Login2", "", "1900-03-25");
+        User user3 = new User("3qw@qw.ru", "Login3", "lodore3", "1996-08-20");
         userController.makeNewUser(user1);
         userController.makeNewUser(user2);
         userController.makeNewUser(user3);

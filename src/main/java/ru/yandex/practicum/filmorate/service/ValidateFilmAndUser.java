@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -23,7 +24,7 @@ public class ValidateFilmAndUser {
             throw new ValidationException("email не может быть пустым");
         }
         if (StringUtils.containsNone(email, "@") || StringUtils.startsWith(email, "@")
-                || StringUtils.endsWithAny(email,"@", ".")) {
+                || StringUtils.endsWithAny(email, "@", ".")) {
             log.error("Недопустимое значение поля email " + email.toString());
             throw new ValidationException("введён не корректный email");
         }

@@ -18,19 +18,19 @@ public class GenresDbStorage {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public GenresDbStorage(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate=jdbcTemplate;
+    public GenresDbStorage(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public Optional<Genre> getGenreById(int id) {
         SqlRowSet genresRows = jdbcTemplate.queryForRowSet("SELECT * " +
                 "FROM genre " +
-                "WHERE genre_id = ?", id);
+                "WHERE genre_id = ? ", id);
         if (genresRows.next()) {
             Genre genre = new Genre(
                     genresRows.getString("genre_name"),
                     genresRows.getInt("genre_id")
-                    );
+            );
             log.info("Найден жанр: {} {}", genre.getId(), genre.getName());
             return Optional.of(genre);
         } else {
@@ -49,7 +49,7 @@ public class GenresDbStorage {
         return new Genre(
                 rs.getString("genre_name"),
                 rs.getInt("genre_id")
-                );
+        );
     }
 }
 

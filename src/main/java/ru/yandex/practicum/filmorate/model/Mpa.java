@@ -1,4 +1,5 @@
 package ru.yandex.practicum.filmorate.model;
+
 import java.util.Objects;
 
 public class Mpa {
@@ -60,7 +61,7 @@ public class Mpa {
         if (this.getClass() != obj.getClass()) return false; // сравниваем классы
         Mpa otherMpa = (Mpa) obj; // открываем доступ к полям другого объекта
         return (id == otherMpa.getId()) && // проверяем все поля
-               name.equals(otherMpa.getName());
+                name.equals(otherMpa.getName());
     }
 }
 

@@ -1,4 +1,5 @@
 package ru.yandex.practicum.filmorate.model;
+
 import lombok.*;
 
 import java.util.*;
@@ -6,7 +7,13 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 public class Film {
-    private Collection<Genre> genres = new HashSet<>();
+    private final Set<Integer> likes = new HashSet<>();
+    private Set<Genre> genres = new TreeSet<>(new Comparator<Genre>() {
+        @Override
+        public int compare(Genre g1, Genre g2) {
+            return g1.getId() - g2.getId();
+        }
+    });
     private int id;
     private String name;
     private String description;
@@ -63,18 +70,6 @@ public class Film {
         this.genres.addAll(genres);
     }
 
-
-//    public Film(String name, String description, String releaseDate, int duration, Mpa mpa,
-//                Collection<Genre> genres) {
-//        this.id = id;
-//        this.name = name;
-//        this.description = description;
-//        this.releaseDate = releaseDate;
-//        this.duration = duration;
-//        this.mpa = mpa;
-//        this.genres.addAll(genres);
-//    }
-
     public Film(String name, String description, String releaseDate, int duration, int mpa,
                 Collection<Genre> genres) {
         this.id = id;
@@ -94,7 +89,6 @@ public class Film {
         this.duration = duration;
         this.mpa = new Mpa(mpa);
     }
-
 
 }
 

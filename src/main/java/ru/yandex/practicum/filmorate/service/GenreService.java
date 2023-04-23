@@ -22,6 +22,6 @@ public class GenreService {
     }
 
     public Optional<Genre> getGenreById(int id) {
-         return genresDbStorage.getGenreById(id);
+        return genresDbStorage.getGenreById(id);
     }
 }

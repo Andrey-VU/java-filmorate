@@ -24,14 +24,14 @@ public class UserDbStorage implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public UserDbStorage(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate=jdbcTemplate;
+    public UserDbStorage(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public User save(User user) {
         String sqlQueryUser = "insert into users(email, login, user_name, birthday) " +
-                "values (?, ?, ?, ?)" ;
+                "values (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQueryUser, new String[]{"user_id"});
@@ -47,7 +47,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public Optional<User> getUserById(int id) {
-    SqlRowSet usersRows = jdbcTemplate.queryForRowSet("SELECT * FROM users WHERE user_id = ? ", id);
+        SqlRowSet usersRows = jdbcTemplate.queryForRowSet("SELECT * FROM users WHERE user_id = ? ", id);
         if (usersRows.next()) {
             User user = new User(
                     usersRows.getInt("user_id"),
@@ -97,19 +97,20 @@ public class UserDbStorage implements UserStorage {
     public Collection<User> getFriends(int id) {
         String sqlQuery = "SELECT u.* " +
                 "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
-                "WHERE f_user_id = " + id ;
+                "WHERE f_user_id = " + id +
+                " ORDER BY f_user_id ASC";
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUsers(rs));
     }
 
     public Collection<User> getCommonFriends(int id1, int id2) {
         String sqlQuery =
                 "SELECT u.* " +
-                "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
-                "WHERE f_user_id = " + id2 +
-                " INTERSECT " +
-                "SELECT u.* " +
-                "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
-                "WHERE f_user_id = " + id1 ;
+                        "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
+                        "WHERE f_user_id = " + id2 +
+                        " INTERSECT " +
+                        "SELECT u.* " +
+                        "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
+                        "WHERE f_user_id = " + id1;
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUsers(rs));
     }
@@ -123,7 +124,13 @@ public class UserDbStorage implements UserStorage {
                 idFriend);
     }
 
-
+    public void deleteFromFriends(int idUser, int idFriend) {
+        String sqlQuery = "DELETE FROM friends WHERE f_user_id = ? " +
+                "AND friend_to = ? ";
+        jdbcTemplate.update(sqlQuery,
+                idUser,
+                idFriend);
+    }
 
 
     @Override

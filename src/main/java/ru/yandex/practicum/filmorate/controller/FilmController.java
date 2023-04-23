@@ -29,6 +29,12 @@ public class FilmController {
         return filmService.getFilmById(id).get();
     }
 
+    @GetMapping(value = {"/popular", "/popular/{count}"})
+    public Collection<Film> getTopFilmsWithOptional(@RequestParam Optional<String> count) {
+        return count.isPresent() ? filmService.getPopularFilms(Integer.parseInt(count.get())) :
+                filmService.getPopularFilms(10);
+    }
+
     @PostMapping()
     public Film makeNewFilm(@Valid @RequestBody Film film) {
         return filmService.save(film);
@@ -42,6 +48,16 @@ public class FilmController {
     @GetMapping()
     public Collection<Film> getFilms() {
         return filmService.getFilms();
+    }
+
+    @PutMapping("/{id}/like/{userId}")
+    public Film likeFilm(@PathVariable int id, @PathVariable int userId) {
+        return filmService.addLike(filmService.getFilmById(id).get(), userId);
+    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public Film unlikeFilm(@PathVariable int id, @PathVariable int userId) {
+        return filmService.deleteLike(getFilmById(id), userId);
     }
 
     @ExceptionHandler

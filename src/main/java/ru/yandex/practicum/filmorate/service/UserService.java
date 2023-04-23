@@ -44,8 +44,7 @@ public class UserService {
                 + idUser + " не найден"));
         User friend = userDbStorage.getUserById(idFriend).orElseThrow(() -> new NullPointerException("Пользователь id "
                 + idFriend + " не найден"));
-        //user.getFriends().add(idFriend);
-        //friend.getFriends().add(idUser);        // вписываем user в список друзей/последователей friend
+
         userDbStorage.addFriend(idUser, idFriend);
         return getFriends(idFriend);
     }
@@ -55,8 +54,8 @@ public class UserService {
                 + idUser + " не найден"));
         User friend = userDbStorage.getUserById(idFriend).orElseThrow(() -> new NullPointerException("Пользователь id "
                 + idFriend + " не найден"));
-        user.getFriends().remove(idFriend);
-        friend.getFriends().remove(idUser);     // обеспечиваем взаимность
+        userDbStorage.deleteFromFriends(idUser, idFriend);
+
     }
 
     public Collection<User> getCommonFriends(int id1, int id2) {
@@ -69,8 +68,8 @@ public class UserService {
     }
 
     public Collection<User> getFriends(int id) {
-//        User user = userDbStorage.getUserById(id).orElseThrow(() -> new NullPointerException("Пользователь id "
-//                + id + " не найден"));
+        User user = userDbStorage.getUserById(id).orElseThrow(() -> new NullPointerException("Пользователь id "
+                + id + " не найден"));
         return userDbStorage.getFriends(id);
     }
 
