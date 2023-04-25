@@ -28,7 +28,7 @@ class MpaControllerTest {
 
     @Test
     void getRateById() {
-        Mpa mpa1 = new Mpa(1);
+        Mpa mpa1 = new Mpa("G", 1);
         assertEquals(mpa1, controller.getMpaById(1), "MPA 1 не удалось достать из хранилища");
     }
 }

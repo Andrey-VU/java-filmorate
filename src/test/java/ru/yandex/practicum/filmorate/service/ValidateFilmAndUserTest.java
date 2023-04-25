@@ -21,7 +21,7 @@ class ValidateFilmAndUserTest {
         validateUser = new ValidateFilmAndUser();
         user = new User(0, "qw@qw.ru", "Login", "Name", "1968-03-25");
         validateFilm = new ValidateFilmAndUser();
-        film = new Film("Assa", "About", "1968-03-25", 120, 1);
+        film = new Film("Assa", "About", "1968-03-25", 120, "G", 1);
     }
 
     @Test

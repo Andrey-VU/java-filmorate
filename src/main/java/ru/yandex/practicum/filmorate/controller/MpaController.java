@@ -32,16 +32,6 @@ public class MpaController {
         return mpaService.getRateById(id).get();
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleNullGenre(final NullPointerException e) {
-        return Map.of("error", e.getMessage());
-    }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationException(final ValidationException e) {
-        return Map.of("error", e.getMessage());
-    }
 }
 

@@ -81,7 +81,8 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public Collection<User> getUsers() {
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users " +
+                "ORDER BY user_id ASC";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeUsers(rs));
     }
 

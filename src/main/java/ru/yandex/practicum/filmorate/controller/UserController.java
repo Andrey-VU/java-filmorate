@@ -32,7 +32,7 @@ public class UserController {
         return userService.updateUser(user);
     }
 
-    @PutMapping("/{id}/friends/{friendId}")                             // сделано
+    @PutMapping("/{id}/friends/{friendId}")
     public Collection<User> addFriend(@PathVariable int id, @PathVariable int friendId) {
         return userService.addFriends(id, friendId);
     }
@@ -42,12 +42,12 @@ public class UserController {
         return userService.getListOfUsers();
     }
 
-    @GetMapping("/{id}/friends/common/{otherId}")                         // в разработке
+    @GetMapping("/{id}/friends/common/{otherId}")
     public Collection<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.getCommonFriends(id, otherId);
     }
 
-    @GetMapping("/{id}/friends")                                              // сделано
+    @GetMapping("/{id}/friends")
     public Collection<User> getFriends(@PathVariable int id) {
         return userService.getFriends(id);
     }
@@ -60,17 +60,5 @@ public class UserController {
     @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteFriend(@PathVariable int id, @PathVariable int friendId) {
         userService.deleteFromFriends(id, friendId);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleNull(final NullPointerException e) {
-        return Map.of("error", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationException(final ValidationException e) {
-        return Map.of("error", e.getMessage());
     }
 }

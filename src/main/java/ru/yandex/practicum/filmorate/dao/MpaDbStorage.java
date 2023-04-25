@@ -48,6 +48,7 @@ public class MpaDbStorage {
 
     private Mpa makeRates(ResultSet rs) throws SQLException {
         return new Mpa(
+                rs.getString("rate_name"),
                 rs.getInt("rate_id"));
     }
 

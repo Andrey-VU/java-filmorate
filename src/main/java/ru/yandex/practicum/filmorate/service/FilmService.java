@@ -16,6 +16,8 @@ public class FilmService {
     private ValidateFilmAndUser validator = new ValidateFilmAndUser();
     @Autowired
     private UserService userService;
+    @Autowired
+    private GenreService genreService;
 
     public FilmService(FilmDbStorage filmDbStorage) {
         this.filmDbStorage = filmDbStorage;
@@ -24,20 +26,26 @@ public class FilmService {
     public Film save(Film film) {
         validator.filmValidate(film);
         filmDbStorage.save(film);
+        if (film.getGenres() != null) {
+            genreService.saveGenres(film);
+        }
+
         log.info("В базу добавлен новый фильм " + getFilmById(film.getId()).toString());
         return filmDbStorage.getFilmById(film.getId()).get();
-    }
-
-    public Optional<Film> getFilmById(int id) {
-        validator.idValidate(id);
-        return filmDbStorage.getFilmById(id);
     }
 
     public Film update(Film film) {
         validator.filmValidate(film);
         filmDbStorage.update(film);
+        genreService.dropGenres(film);
+        genreService.saveGenres(film);
         log.info("Информация о фильме " + getFilmById(film.getId()).toString() + "обновлена");
-        return filmDbStorage.getFilmById(film.getId()).get();
+        return getFilmById(film.getId()).get();
+    }
+
+    public Optional<Film> getFilmById(int id) {
+        validator.idValidate(id);
+        return filmDbStorage.getFilmById(id);
     }
 
     public Collection<Film> getFilms() {

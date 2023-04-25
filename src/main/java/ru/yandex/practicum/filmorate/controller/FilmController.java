@@ -24,7 +24,7 @@ public class FilmController {
         this.filmService = filmService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}")                                         //
     public Film getFilmById(@PathVariable int id) {
         return filmService.getFilmById(id).get();
     }
@@ -35,17 +35,17 @@ public class FilmController {
                 filmService.getPopularFilms(10);
     }
 
-    @PostMapping()
+    @PostMapping()                                                  // +
     public Film makeNewFilm(@Valid @RequestBody Film film) {
         return filmService.save(film);
     }
 
-    @PutMapping()
+    @PutMapping()                                                   // +
     public Film updateFilm(@Valid @RequestBody Film film) {
         return filmService.update(film);
     }
 
-    @GetMapping()
+    @GetMapping()                                                   //
     public Collection<Film> getFilms() {
         return filmService.getFilms();
     }
@@ -58,18 +58,6 @@ public class FilmController {
     @DeleteMapping("/{id}/like/{userId}")
     public Film unlikeFilm(@PathVariable int id, @PathVariable int userId) {
         return filmService.deleteLike(getFilmById(id), userId);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleNullFilm(final NullPointerException e) {
-        return Map.of("error", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationException(final ValidationException e) {
-        return Map.of("error", e.getMessage());
     }
 }
 

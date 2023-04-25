@@ -45,30 +45,9 @@ public class FilmDbStorage implements FilmStorage {
             stmt.setString(3, film.getReleaseDate());
             stmt.setInt(4, film.getDuration());
             stmt.setInt(5, film.getMpa().getId());
-
             return stmt;
         }, keyHolder);
-
         film.setId(keyHolder.getKey().intValue());
-        if (film.getGenres() != null) {
-            saveGenres(film);
-        }
-    }
-
-    private void saveGenres(Film film) {
-        String sqlQueryGenre = "insert into genres_films(film_id, genre_id) " +
-                "values (?, ?) ";
-        for (Genre genre : film.getGenres()) {
-            jdbcTemplate.update(sqlQueryGenre,
-                    film.getId(),
-                    genre.getId());
-        }
-    }
-
-    private void dropGenres(Film film) {
-        String sqlQueryGenre = "DELETE FROM genres_films WHERE film_id = ? ";
-        jdbcTemplate.update(sqlQueryGenre,
-                film.getId());
     }
 
     @Override
@@ -83,22 +62,6 @@ public class FilmDbStorage implements FilmStorage {
                 film.getDuration(),
                 film.getMpa().getId(),
                 film.getId());
-
-        dropGenres(film);
-        saveFilmGenres(film, film.getId());
-    }
-
-    private void saveFilmGenres(Film film, int filmId) {
-        if (film.getGenres() == null || film.getGenres().isEmpty()) {
-            return;
-        }
-        String sqlQuery = "insert into genres_films (film_id, genre_id) " +
-                "values (?, ?)";
-        for (Genre genre : film.getGenres()) {
-            jdbcTemplate.update(sqlQuery,
-                    filmId,
-                    genre.getId());
-        }
     }
 
     @Override
@@ -113,6 +76,7 @@ public class FilmDbStorage implements FilmStorage {
                     filmsRows.getString("description"),
                     filmsRows.getString("release_date"),
                     filmsRows.getInt("duration"),
+                    filmsRows.getString("rate_name"),
                     filmsRows.getInt("rate_id"),
                     makeGenresCollection(id)
             );
@@ -142,12 +106,12 @@ public class FilmDbStorage implements FilmStorage {
                 rs.getString("description"),
                 rs.getString("release_date"),
                 rs.getInt("duration"),
-                makeMpa(rs.getInt("rate_id")),
+                makeMpa(rs.getString("rate_name"), rs.getInt("rate_id")),
                 makeGenresCollection(rs.getInt("film_id")));
     }
 
-    private Mpa makeMpa(int rate_id) {
-        return new Mpa(rate_id);
+    private Mpa makeMpa(String rate_name, int rate_id) {
+        return new Mpa(rate_name, rate_id);
     }
 
     private Collection<Genre> makeGenresCollection(int film_id) {
@@ -185,6 +149,7 @@ public class FilmDbStorage implements FilmStorage {
         String sqlQuery = "SELECT *, COUNT(film_id_f) " +
                 "FROM fan_list AS fl " +
                 "JOIN films AS f ON f.film_id = fl.film_id_f " +
+                "JOIN rate_mpa AS rm ON f.rate_id = rm.rate_id " +
                 "GROUP BY film_id_f " +
                 "ORDER BY COUNT(film_id_f) DESC " +
                 "LIMIT " + count;

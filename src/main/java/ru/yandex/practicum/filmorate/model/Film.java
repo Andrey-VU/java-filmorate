@@ -9,7 +9,7 @@ import java.util.*;
 @NoArgsConstructor
 public class Film {
     private final Set<Integer> likes = new HashSet<>();
-    private Set<Genre> genres = new TreeSet<>(new Comparator<Genre>() {
+    private Collection<Genre> genres = new TreeSet<>(new Comparator<Genre>() {
         @Override
         public int compare(Genre g1, Genre g2) {
             return g1.getId() - g2.getId();
@@ -22,12 +22,12 @@ public class Film {
     private int duration;
     private Mpa mpa;
 
-    public Film(String name, String description, String releaseDate, int duration, int mpa) {
+    public Film(String name, String description, String releaseDate, int duration, String nameMpa, int mpa) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
-        this.mpa = new Mpa(mpa);
+        this.mpa = new Mpa(nameMpa, mpa);
     }
 
     public Film(String name, String description, String releaseDate, int duration, Mpa mpa,
@@ -60,37 +60,45 @@ public class Film {
         this.genres.addAll(genres);
     }
 
-    public Film(int id, String name, String description, String releaseDate, int duration, int mpa,
+    public Film(int id, String name, String description, String releaseDate, int duration, String nameMpa, int mpa,
                 Collection<Genre> genres) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
-        this.mpa = new Mpa(mpa);
+        this.mpa = new Mpa(nameMpa, mpa);
         this.genres.addAll(genres);
     }
 
-    public Film(String name, String description, String releaseDate, int duration, int mpa,
+    public Film(String name, String description, String releaseDate, int duration, String nameMpa, int mpa,
                 Collection<Genre> genres) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
-        this.mpa = new Mpa(mpa);
+        this.mpa = new Mpa(nameMpa, mpa);
         this.genres.addAll(genres);
     }
 
-    public Film(int id, String name, String description, String releaseDate, int duration, int mpa) {
+    public Film(int id, String name, String description, String releaseDate, int duration, String nameMpa, int mpa) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
-        this.mpa = new Mpa(mpa);
+        this.mpa = new Mpa(nameMpa, mpa);
     }
 
+    public Film(int film_id, String name, String description, String release_date, int duration, Mpa makeMpa) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.mpa = makeMpa;
+    }
 }
 
 
