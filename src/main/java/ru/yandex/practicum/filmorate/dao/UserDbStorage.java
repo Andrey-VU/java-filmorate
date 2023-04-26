@@ -112,13 +112,15 @@ public class UserDbStorage implements UserStorage {
                         "SELECT u.* " +
                         "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
                         "WHERE f_user_id = " + id1;
-        String sqlQuery2 =  // эта конструкция пока не работает
-                "SELECT u.* FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
-                        "WHERE user_id = " + id1 + " AND user_id IN(" +
-                        "SELECT f_user_id FROM friends " +
-                        "WHERE friend_to = " + id1 + ")";
+        String sqlQuery2 =  // конструкция без использования INTERSECT
+                "SELECT * FROM users AS u " +
+                        "JOIN friends AS f on u.user_id = f.friend_to " +
+                        "WHERE f_user_id = " + id1 + " AND friend_to IN " +
+                        "(SELECT friend_to " +
+                        "FROM friends " +
+                        "WHERE f_user_id = " + id2 + ")";
 
-        return jdbcTemplate.query(sqlQuery1, (rs, rowNum) -> makeUsers(rs));
+        return jdbcTemplate.query(sqlQuery2, (rs, rowNum) -> makeUsers(rs));
     }
 
     public void addFriend(int idUser, int idFriend) {
