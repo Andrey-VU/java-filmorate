@@ -67,10 +67,10 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public void update(User user) {
+        getUserById(user.getId());
         String sqlQuery = "UPDATE users set " +
                 "user_name = ?, birthday = ?, login = ?, email = ? " +
                 "WHERE user_id = ?";
-
         jdbcTemplate.update(sqlQuery,
                 user.getName(),
                 user.getBirthday(),
@@ -104,7 +104,7 @@ public class UserDbStorage implements UserStorage {
     }
 
     public Collection<User> getCommonFriends(int id1, int id2) {
-        String sqlQuery =
+        String sqlQuery1 =
                 "SELECT u.* " +
                         "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
                         "WHERE f_user_id = " + id2 +
@@ -112,8 +112,13 @@ public class UserDbStorage implements UserStorage {
                         "SELECT u.* " +
                         "FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
                         "WHERE f_user_id = " + id1;
+        String sqlQuery2 =  // эта конструкция пока не работает
+                "SELECT u.* FROM users AS u JOIN friends AS f on u.user_id = f.friend_to " +
+                        "WHERE user_id = " + id1 + " AND user_id IN(" +
+                        "SELECT f_user_id FROM friends " +
+                        "WHERE friend_to = " + id1 + ")";
 
-        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUsers(rs));
+        return jdbcTemplate.query(sqlQuery1, (rs, rowNum) -> makeUsers(rs));
     }
 
     public void addFriend(int idUser, int idFriend) {

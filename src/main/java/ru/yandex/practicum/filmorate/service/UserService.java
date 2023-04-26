@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,6 +26,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        validator.idValidate(user.getId());
         validator.userValidate(user);
         userDbStorage.update(user);
         log.info("Пользователь " + userDbStorage.getUserById(user.getId()).toString() + "был обновлён");
@@ -71,7 +73,6 @@ public class UserService {
                 + id + " не найден"));
         return userDbStorage.getFriends(id);
     }
-
 
     public User getUserById(int id) {
         User user = userDbStorage.getUserById(id).orElseThrow(() -> new NullPointerException("Пользователь id "

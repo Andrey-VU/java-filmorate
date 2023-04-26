@@ -35,6 +35,7 @@ public class FilmService {
     }
 
     public Film update(Film film) {
+        validator.idValidate(film.getId());
         validator.filmValidate(film);
         filmDbStorage.update(film);
         genreService.dropGenres(film);

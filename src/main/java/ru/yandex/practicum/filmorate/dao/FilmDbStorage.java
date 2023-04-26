@@ -52,6 +52,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public void update(@NotNull Film film) throws ValidationException {
+        getFilmById(film.getId());
         String sqlQuery = "UPDATE films set " +
                 "name = ?, description = ?, release_date = ?, duration = ?, rate_id = ? " +
                 "WHERE film_id = ? ";
