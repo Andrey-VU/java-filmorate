@@ -29,7 +29,7 @@ class GenreControllerTest {
 
     @Test
     void shouldGetGenreById() {
-        Genre genre1 = new Genre("Комедия",1);
+        Genre genre1 = new Genre("Комедия", 1);
         assertEquals(genre1, controller.getGenreById(1), "Genre 1 не удалось достать из хранилища");
     }
 }

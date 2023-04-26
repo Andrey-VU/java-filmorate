@@ -29,9 +29,11 @@ public class GenreService {
     public void saveGenres(Film film) {
         genresDbStorage.saveGenres(film);
     }
+
     public void dropGenres(Film film) {
         genresDbStorage.dropGenres(film);
     }
+
     public Collection<Genre> makeGenresCollection(int id) {
         return genresDbStorage.makeGenresCollection(id);
     }
