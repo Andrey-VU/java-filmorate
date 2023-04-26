@@ -46,13 +46,13 @@ public class GenresDbStorage {
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeGenre(rs));
     }
 
-    public Collection<Genre> makeGenresCollection(int film_id) {
-        String sql = "SELECT * " +
-                "FROM genres_films AS gf JOIN genre AS g ON g.genre_id = gf.genre_id " +
-                "WHERE gf.film_id = " + film_id +
-                "ORDER BY gf.genre_id ASC";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> makeGenre(rs));
-    }
+//    public Collection<Genre> makeGenresCollection(int film_id) {
+//        String sql = "SELECT * " +
+//                "FROM genres_films AS gf JOIN genre AS g ON g.genre_id = gf.genre_id " +
+//                "WHERE gf.film_id = " + film_id +
+//                "ORDER BY gf.genre_id ASC";
+//        return jdbcTemplate.query(sql, (rs, rowNum) -> makeGenre(rs));
+//    }
 
     private Genre makeGenre(ResultSet rs) throws SQLException {
         return new Genre(

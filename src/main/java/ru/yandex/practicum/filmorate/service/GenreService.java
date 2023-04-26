@@ -34,7 +34,7 @@ public class GenreService {
         genresDbStorage.dropGenres(film);
     }
 
-    public Collection<Genre> makeGenresCollection(int id) {
-        return genresDbStorage.makeGenresCollection(id);
-    }
+//    public Collection<Genre> makeGenresCollection(int id) {
+//        return genresDbStorage.makeGenresCollection(id);
+//    }
 }
