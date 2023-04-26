@@ -91,7 +91,7 @@ public class Film {
         this.mpa = new Mpa(nameMpa, mpa);
     }
 
-    public Film(int film_id, String name, String description, String release_date, int duration, Mpa makeMpa) {
+    public Film(int id, String name, String description, String releaseDate, int duration, Mpa makeMpa) {
         this.id = id;
         this.name = name;
         this.description = description;
