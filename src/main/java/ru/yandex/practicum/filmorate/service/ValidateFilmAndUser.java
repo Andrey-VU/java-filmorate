@@ -3,15 +3,16 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+
 import java.time.LocalDate;
 import java.time.Month;
 
 @Slf4j
-@Component
+@Service
 public class ValidateFilmAndUser {
 
     public void userValidate(User user) {
@@ -23,7 +24,7 @@ public class ValidateFilmAndUser {
             throw new ValidationException("email не может быть пустым");
         }
         if (StringUtils.containsNone(email, "@") || StringUtils.startsWith(email, "@")
-                || StringUtils.endsWithAny(email,"@", ".")) {
+                || StringUtils.endsWithAny(email, "@", ".")) {
             log.error("Недопустимое значение поля email " + email.toString());
             throw new ValidationException("введён не корректный email");
         }

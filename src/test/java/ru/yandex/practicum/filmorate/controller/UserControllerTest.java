@@ -1,30 +1,35 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.test.annotation.DirtiesContext;
+import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+@AutoConfigureTestDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserControllerTest {
     UserController userController;
     @Autowired
     UserService userService;
     @Autowired
-    UserStorage userStorage;
+    UserDbStorage userStorage;
 
     @Autowired
     private UserController controller;
@@ -44,12 +49,11 @@ public class UserControllerTest {
         userController.getListOfUsers().clear();
     }
 
-
     @Test
     public void shouldReturnListOfUsers() {
-        User user1 = new User(0, "qw@qw.ru", "Login", "", "1900-03-25");
-        User user2 = new User(0, "amil@mail.ru", "Login", "   ", "1900-03-25");
-        User user3 = new User(0, "test@mail.ru", "dolore", "lodore", "1996-08-20");
+        User user1 = new User("qw@qw.ru", "Login", "", "1900-03-25");
+        User user2 = new User("amil@mail.ru", "Login", "   ", "1900-03-25");
+        User user3 = new User("test@mail.ru", "dolore", "lodore", "1996-08-20");
         userController.makeNewUser(user1);
         userController.makeNewUser(user2);
         userController.makeNewUser(user3);
@@ -63,14 +67,13 @@ public class UserControllerTest {
 
     @Test
     public void shouldMakeUser() {
-        User user = new User(0, "qw@qw.ru", "Login",
-                "", "1900-03-25");
+        User user = new User("qw@qw.ru", "Login", "", "1900-03-25");
         userController.makeNewUser(user);
         assertEquals(user.getLogin(), user.getName(), "Не удалось создать имя - копию логина");
-        User user2 = new User(0, "qw@qw.ru", "Login", "   ", "1900-03-25");
+        User user2 = new User("qw@qw.ru", "Login2", "   ", "1900-03-25");
         userController.makeNewUser(user2);
         assertEquals(user2.getLogin(), user2.getName(), "Не удалось создать имя - копию логина");
-        User user3 = new User(0, "qw@qw.ru", "Login", null, "1900-03-25");
+        User user3 = new User("qw@qw.ru", "Login3", null, "1900-03-25");
         userController.makeNewUser(user3);
         assertEquals(user3.getLogin(), user3.getName(), "Не удалось создать имя - копию логина");
     }
@@ -102,7 +105,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldThrowNullPointerWhenUpdateUserWhithIncorrectId() {
-        User user1 = new User(0, "qw@qw.ru", "Login", "", "1900-03-25");
+        User user1 = new User("qw@qw.ru", "Login", "", "1900-03-25");
         userController.makeNewUser(user1);
         User user999 = new User(999, "qw@qw.ru", "Login", "", "1900-03-25");
         assertThrows(NullPointerException.class, () -> userController.updateUser(user999));
@@ -111,9 +114,30 @@ public class UserControllerTest {
     @Test
     public void shouldGetFriendsOfUserById() {
         Collection<User> tmpListOfFriends = new ArrayList<>();
-        User user1 = new User(0, "qw@qw.ru", "Login", "", "1900-03-25");
-        User user2 = new User(0, "amil@mail.ru", "Login", "   ", "1900-03-25");
-        User user3 = new User(0, "test@mail.ru", "dolore", "lodore", "1996-08-20");
+        User user1 = new User("1qw@qw.ru", "Login1", "lodore1", "1900-03-25");
+        User user2 = new User("2qw@qw.ru", "Login2", "lodore2", "1900-03-25");
+        User user3 = new User("3qw@qw.ru", "Login3", "lodore3", "1996-08-20");
+        User user4 = new User("4qw@qw.ru", "Login4", "lodore4", "1996-08-20");
+        userController.makeNewUser(user1);
+        userController.makeNewUser(user2);
+        userController.makeNewUser(user3);
+        userController.makeNewUser(user4);
+        tmpListOfFriends.add(user2);
+        tmpListOfFriends.add(user3);
+        tmpListOfFriends.add(user4);
+        userController.addFriend(user1.getId(), user2.getId());
+        userController.addFriend(user1.getId(), user3.getId());
+        userController.addFriend(user1.getId(), user4.getId());
+        assertEquals(tmpListOfFriends, userController.getFriends(user1.getId()), "Не удалось сформировать или " +
+                "вернуть список друзей");
+    }
+
+    @Test
+    public void shouldGetFriendsOfUserByIdWithEmptyFieldsName() {
+        Collection<User> tmpListOfFriends = new ArrayList<>();
+        User user1 = new User("1qw@qw.ru", "Login1", "     ", "1900-03-25");
+        User user2 = new User("2qw@qw.ru", "Login2", "", "1900-03-25");
+        User user3 = new User("3qw@qw.ru", "Login3", "lodore3", "1996-08-20");
         userController.makeNewUser(user1);
         userController.makeNewUser(user2);
         userController.makeNewUser(user3);
@@ -128,10 +152,10 @@ public class UserControllerTest {
     @Test
     public void shouldGetCommonFriendsOfUser() {
         Collection<User> tmpListOfCommonFriends = new ArrayList<>();
-        User user1 = new User(0, "qw@qw.ru", "Login", "", "1900-03-25");
-        User user2 = new User(0, "amil@mail.ru", "Login", "   ", "1900-03-25");
-        User user3 = new User(0, "test@mail.ru", "dolore", "lodore", "1996-08-20");
-        User commonFriend = new User(0, "cf@cf.ru", "Common", "Friend", "1999-03-25");
+        User user1 = new User("qw@qw.ru", "Login", "", "1900-03-25");
+        User user2 = new User("amil@mail.ru", "Login", "   ", "1900-03-25");
+        User user3 = new User("test@mail.ru", "dolore", "lodore", "1996-08-20");
+        User commonFriend = new User("cf@cf.ru", "Common", "Friend", "1999-03-25");
 
         userController.makeNewUser(user1);
         userController.makeNewUser(user2);

@@ -10,9 +10,10 @@ import java.util.Optional;
 
 @Slf4j
 @Component
+@Deprecated
 public class InMemoryUserStorage implements UserStorage {
-    private int id;
     private final HashMap<Integer, User> users = new HashMap<>();
+    private int id;
 
     @Override
     public int generateId() {

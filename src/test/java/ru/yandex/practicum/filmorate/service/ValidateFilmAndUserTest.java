@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ValidateFilmAndUserTest {
     ValidateFilmAndUser validateUser;
@@ -22,7 +21,7 @@ class ValidateFilmAndUserTest {
         validateUser = new ValidateFilmAndUser();
         user = new User(0, "qw@qw.ru", "Login", "Name", "1968-03-25");
         validateFilm = new ValidateFilmAndUser();
-        film = new Film(0, "Assa", "About", "1968-03-25", 120);
+        film = new Film("Assa", "About", "1968-03-25", 120, "G", 1);
     }
 
     @Test

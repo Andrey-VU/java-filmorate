@@ -10,9 +10,10 @@ import java.util.Optional;
 
 @Slf4j
 @Component
+@Deprecated
 public class InMemoryFilmStorage implements FilmStorage {
-    private int id = 0;
     private final HashMap<Integer, Film> films = new HashMap<>();
+    private int id = 0;
 
     @Override
     public void save(Film film) {
