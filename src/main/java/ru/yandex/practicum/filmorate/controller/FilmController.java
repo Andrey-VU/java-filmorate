@@ -21,7 +21,7 @@ public class FilmController {
         this.filmService = filmService;
     }
 
-    @GetMapping("/{id}")                                         //
+    @GetMapping("/{id}")                                         
     public Film getFilmById(@PathVariable int id) {
         return filmService.getFilmById(id).get();
     }
@@ -32,17 +32,17 @@ public class FilmController {
                 filmService.getPopularFilms(10);
     }
 
-    @PostMapping()                                                  // +
+    @PostMapping()
     public Film makeNewFilm(@Valid @RequestBody Film film) {
         return filmService.save(film);
     }
 
-    @PutMapping()                                                   // +
+    @PutMapping()
     public Film updateFilm(@Valid @RequestBody Film film) {
         return filmService.update(film);
     }
 
-    @GetMapping()                                                   //
+    @GetMapping()
     public Collection<Film> getFilms() {
         return filmService.getFilms();
     }
